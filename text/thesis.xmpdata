@@ -1,7 +1,7 @@
 % Metadata to be stored in PDF, see documentation of the pdfx package for more details.
 
 \Author{Tomáš Kremel}
-\Title{Thesis title}
-\Keywords{keywords\sep more such\sep yet another}
+\Title{Evaluating Point Cloud Rendering Approaches for Camera Pose Verification}
+\Keywords{point clouds\sep rendering\sep neural rendering \sep localization}
 \Subject{Abstract of thesis}
 \Publisher{Charles University}

@@ -42,7 +42,7 @@
 \usepackage{bm}                % boldface symbols (\bm)
 \usepackage{graphicx}          % embedding of pictures
 \usepackage{fancyvrb}          % improved verbatim environment
-\usepackage{natbib}            % citation style AUTHOR (YEAR), or AUTHOR [NUMBER]
+\usepackage[square]{natbib}            % citation style AUTHOR (YEAR), or AUTHOR [NUMBER]
 \usepackage[nottoc]{tocbibind} % makes sure that bibliography and the lists
                                % of figures/tables are included in the table
                                % of contents
@@ -50,11 +50,24 @@
 \usepackage{booktabs}          % improved horizontal lines in tables
 \usepackage{paralist}          % improved enumerate and itemize
 \usepackage{xcolor}            % typesetting in color
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{nameref}
+\usepackage{macros}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[capitalise]{cleveref}
+
 
 %%% Basic information on the thesis
 
 % Thesis title in English (exactly as in the formal assignment)
-\def\ThesisTitle{Thesis title}
+\def\ThesisTitle{Evaluating Point Cloud Rendering Approaches for Camera Pose Verification}
 
 % Author of the thesis
 \def\ThesisAuthor{Tomáš Kremel}
@@ -65,16 +78,18 @@
 % Name of the department or institute, where the work was officially assigned
 % (according to the Organizational Structure of MFF UK in English,
 % or a full name of a department outside MFF)
-\def\Department{Name of the department}
+\def\Department{Department of Algebra}
 
+% Department of Theoretical Computer Science and Mathematical Logic
 % Is it a department (katedra), or an institute (ústav)?
-\def\DeptType{Department of Theoretical Computer Science and Mathematical Logic}
+\def\DeptType{Department}
 
 % Thesis supervisor: name, surname and titles
-\def\Supervisor{Supervisor's Name}
+\def\SupervisorA{doc. Ing. Tomáš Pajdla, Ph.D.}
+\def\SupervisorB{Torsten Sattler, Dr. rer. nat.}
 
 % Supervisor's department (again according to Organizational structure of MFF)
-\def\SupervisorsDepartment{department}
+\def\SupervisorsDepartment{Department of Algebra}
 
 % Study programme and specialization
 \def\StudyProgramme{Computer Science}
@@ -83,17 +98,44 @@
 % An optional dedication: you can thank whomever you wish (your supervisor,
 % consultant, a person who lent the software, etc.)
 \def\Dedication{%
-Dedication.
+I would like to express my gratitude and appreciation to my supervisors,
+for their suggestions, great support, and inexhaustible patience while
+I was finding motivation. I would also like to thank The Czech Institute
+of Informatics, Robotics, and Cybernetics for providing me with all the
+necessary GPU resources required for computations. Further, I would like
+to recognize my friends Tomáš Souček and Vojtěch Kužel for their consultations.
+Finally, my admiration and credit go to my wife, without whom this thesis
+would not be a reality.
 }
 
 % Abstract (recommended length around 80-200 words; this is not a copy of your thesis assignment!)
 \def\Abstract{%
-Abstract.
+Visual localization is the problem of estimating the 6~degrees of freedom
+(DoF) camera pose from which a query image was taken relative to a known
+reference scene representation. It is the key for applications such as
+Augmented, Mixed, and Virtual Reality, as well as autonomous robotics
+such as drones or self-driving cars.
+
+This thesis focuses on the pose verification and ranking step of a visual
+localization pipeline that uses 3D point clouds and 2D-3D correspondences
+between the query image and 3D scene points for candidate camera poses
+estimations. The thesis explores point cloud rendering approaches as they
+are utilized in the verification step – the render of the discretized
+scene from a given candidate position is compared to the actual query
+image to asses if the given couple depicts the same place.
+
+One of the main challenges of such rendering is occlusion handling. Due
+to the sparsity of points employed for otherwise continuous real world
+representation, information about what lies in the front and what is
+hidden can be easily lost when projected to the 2D image. Rendering
+approaches explored in this thesis focus on the challenge directly or
+as a component for training a novel view synthesis DNN-based renderer.
+Rendering influence on localization performance is investigated.
 }
 
 % 3 to 5 keywords (recommended), each enclosed in curly braces
 \def\Keywords{%
-{key} {words}
+{point clouds,} {rendering,} {neural rendering,} {localization}
 }
 
 %% The hyperref package for clickable links in PDF and also for storing
@@ -103,7 +145,7 @@ Abstract.
 \hypersetup{breaklinks=true}
 
 % Definitions of macros (see description inside)
-\include{macros}
+% \include{macros}
 
 % Title page and various mandatory informational pages
 \begin{document}
@@ -115,11 +157,10 @@ Abstract.
 
 %%% Each chapter is kept in a separate file
 \include{chap_0.0.0_Introduction}
-
-\include{chap_1.0.0}
-\include{chap_2.0.0}
-
-\include{chap_Conclusion}
+\include{chap_1.0.0_Visual_Localization}
+\include{chap_2.0.0_Pointcloud_Rendering}
+\include{chap_3.0.0_Pose_Verification}
+\include{chap_4.0.0_Conclusion}
 
 %%% Bibliography
 \include{bibliography}
@@ -134,6 +175,16 @@ Abstract.
 %%% Abbreviations used in the thesis, if any, including their explanation
 %%% In mathematical theses, it could be better to move the list of abbreviations to the beginning of the thesis.
 \chapwithtoc{List of Abbreviations}
+SfM
+DNN
+CNN
+NN
+CG
+GAN
+VAE
+VGG
+SDF
+CSG
 
 %%% Attachments to the master thesis, if any. Each attachment must be
 %%% referred to at least once from the text of the thesis. Attachments
@@ -146,10 +197,10 @@ Abstract.
 %%% source code, data files, interactive charts, etc.). Electronic attachments
 %%% should be uploaded to SIS and optionally also included in the thesis on a~CD/DVD.
 %%% Allowed file formats are specified in provision of the rector no. 72/2017.
-\appendix
-\chapter{Attachments}
+%\appendix
+%\chapter{Attachments}
 
-\section{First Attachment}
+%\section{First Attachment}
 
 \openright
 \end{document}
