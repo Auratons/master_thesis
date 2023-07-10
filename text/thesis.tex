@@ -62,6 +62,26 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage[capitalise]{cleveref}
+\usepackage{tikz}
+\usetikzlibrary{positioning, graphs, arrows.meta, calc, quotes}
+
+
+\tikzset{process/.style={
+    rectangle,
+    rounded corners=3mm,
+    minimum size=6mm,
+    top color=blue!10,
+    bottom color=blue!30,
+    font=\footnotesize
+}}
+\tikzset{data/.style={
+    rectangle,
+    fill=green!20,
+    minimum size=6mm,
+    align=left,
+    font=\footnotesize
+}}
+\definecolor{darkgreen}{RGB}{0,100,0}
 
 
 %%% Basic information on the thesis
@@ -100,8 +120,9 @@
 \def\Dedication{%
 I would like to express my gratitude and appreciation to my supervisors,
 for their suggestions, great support, and inexhaustible patience while
-I was finding motivation. I would also like to thank The Czech Institute
-of Informatics, Robotics, and Cybernetics for providing me with all the
+I was finding motivation to put this work into reality. I would also like
+to thank The Czech Institute of Informatics, Robotics, and Cybernetics
+(CIIRC) for providing me with all the
 necessary GPU resources required for computations. Further, I would like
 to recognize my friends Tomáš Souček and Vojtěch Kužel for their consultations.
 Finally, my admiration and credit go to my wife, without whom this thesis
@@ -176,15 +197,18 @@ Rendering influence on localization performance is investigated.
 %%% In mathematical theses, it could be better to move the list of abbreviations to the beginning of the thesis.
 \chapwithtoc{List of Abbreviations}
 SfM
+NN
 DNN
 CNN
-NN
 CG
 GAN
 VAE
 VGG
 SDF
 CSG
+DB
+CV
+IMC
 
 %%% Attachments to the master thesis, if any. Each attachment must be
 %%% referred to at least once from the text of the thesis. Attachments

@@ -1,0 +1,30 @@
+\begin{tikzpicture}[
+    >={Triangle[scale width=0.8]}, thick, black!70,
+    text=black,
+    every new ->/.style={shorten >=-1pt}
+]
+    \matrix[row sep=5mm, column sep=10mm] {
+        % First row
+        & [-4mm] \node (A) [data, fill=darkgreen!20] {COLMAP Data\\ -- images\\ -- cameras}; &
+        \node (B) [process]    {load\textunderscore{}data.py}; & \\
+        % Second row
+        \node [coordinate] (helper) {}; &
+        \node (D) [process,align=center] {Generate matrices\\{\scriptsize IMC variant}}; &
+        \node (AA) [data, fill=darkgreen!20] {Point Cloud}; & \\
+        % Third row
+        & \node (CC) [data] {Camera Poses}; &
+        \node (E) [process] {Dockerized Renderers}; &
+        \node (F) [data, draw]    {Aligned Dataset};\\
+        % Fourth row
+        & \node (G) [process] {build\textunderscore{}cutouts\textunderscore{}colmap.py}; &
+        \node (H) [data, draw] {Cutouts}; & \\
+    };
+    \graph [use existing nodes] {
+        A -> B;
+        A -> [dashed] D -> [dashed] CC -> [dashed] E -> [dashed] F;
+        G -> H;
+        AA -> [dashed] E; AA -> B;
+    };
+    \draw [rounded corners, ->] (B) -| (F);
+    \draw [rounded corners, ->] (A) -| (helper) |- (G);
+\end{tikzpicture}

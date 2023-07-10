@@ -1,0 +1,36 @@
+\begin{tikzpicture}[
+    >={Triangle[scale width=0.8]}, thick, black!70,
+    text=black,
+    every new ->/.style={shorten >=-1pt}
+]
+    \matrix[row sep=10mm, column sep=8mm] {
+        % Zeroth row
+        \node (A) [data, fill=darkgreen!20, align=left] {DB Cutouts\\Query Images}; & & \\
+        % First row
+        \node (B) [process] {File Lists}; &
+        \node (C) [data]    {DB\,\&\,Query Lists}; &
+        \node (D) [process] {Compute Features}; \\
+        % Second row
+        \node (G) [data]    {DB$\times$Query Scores}; &
+        \node (F) [process] {Compute Scores}; &
+        \node (E) [data]    {DB\,\&\,Query Features}; \\
+        % Third row
+        \node (H) [process] {Image Retrieval}; &
+        \node (I) [data]    {Retrieval Candidates}; &
+        \node (J) [process] {Pose Estimation}; \\
+        % Fourth row
+        \node (AA) [data, fill=darkgreen!20] {Point Clouds}; &
+        \node (L) [process, draw]            {Renderer}; & 
+        \node (K) [data]                     {Candidate Poses}; \\
+        % Fifth row
+        & \node (M) [data]  {Candidate Renders}; &
+        \node (N) [process] {Pose Verification}; \\
+        % Sixth row
+        \node (P) [process]  {Evaluation}; & &
+        \node (O) [data, draw] {Best Query Poses}; \\
+    };
+    \graph [use existing nodes] {
+        A -> B -> C -> D -> E -> F -> G -> H -> I -> J -> K ->["reformatted"'{font=\tiny,inner sep=2pt}] L -> M -> N -> O -> P;
+        E -> J; AA -> L; K -> N;
+    };
+\end{tikzpicture}

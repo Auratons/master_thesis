@@ -1,0 +1,37 @@
+\begin{tikzpicture}[
+    >={Triangle[scale width=0.8]}, thick, black!70,
+    text=black,
+    every new ->/.style={shorten >=-1pt}
+]
+    \matrix[row sep=5mm, column sep=10mm] {
+        % First row
+        & [-5mm]
+        \node (A) [data, text width=2.1cm, fill=darkgreen!20] {3D Scans\\ Poses \\ Cutouts}; & [-5mm]
+        \node (B) [process] {render\textunderscore{}inloc\textunderscore{}db.py}; & \\ [-4.5mm]
+        % 1.5 row
+        & \node (AA) [data, text width=2.1cm, fill=darkgreen!20] {Point Cloud}; & & & & \\
+        % Second row
+        \node [coordinate] (helper) {}; & \node (C) [data] {Camera Poses}; &
+        \node (D) [process,align=center] {Generate matrices\\{\scriptsize InLoc variant}}; &
+        \node (E) [data]    {Aligned Buildings}; \\
+        % Third row
+        & \node (CC) [process] {Dockerized Renderers}; & & \\
+        % Fourth row
+        & & \node (F) [data, draw] {Aligned Dataset}; & 
+        \node (G) [process] {export\textunderscore{}to\textunderscore{}nriw.py}; \\
+        % Fifth row
+        & \node (J) [process] {build\textunderscore{}cutouts\textunderscore{}inloc.py}; &
+        \node (I) [data, draw] {Cutouts}; & \\
+    };
+    \graph [use existing nodes] {
+        A -> B;
+        E -> G -> F;
+        E -> [dashed] D -> [dashed] C -> [dashed] CC;
+        J -> I;
+    };
+    \draw [rounded corners, ->] (B) -| (E);
+    \draw [rounded corners, ->, dashed] (CC) -| ($ (E.south west) + (7mm, 0)$);
+    \draw [rounded corners, ->] (A) -| (helper) |- (J);
+    \draw [rounded corners, ->] (AA) -| (B);
+    \draw [rounded corners, ->, dashed] (AA) -| ($ (helper) + (1mm, 0)$) |- (CC);
+\end{tikzpicture}

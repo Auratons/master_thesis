@@ -1,0 +1,47 @@
+\begin{tikzpicture}[
+    >={Triangle[scale width=0.8]}, thick, black!70,
+    text=black,
+    every new ->/.style={shorten >=-1pt},
+]
+    \matrix (m) [row sep=5mm, column sep=10mm] {
+        % First row
+        \node (A)       [data, text width=2.1cm, fill=darkgreen!20] {360\textdegree{} Scans\\ Poses}; & [-21mm]
+        \node (B)       [process] {preprocess.m}; & [-8mm]
+        \node (C)       [data]    {COLMAP Data \\ -- images \\ -- cameras}; & [-3mm]
+        \node (helper1) [coordinate] {}; & [-2mm]
+        \node (load)    [process] {load\textunderscore{}data.py}; \\ [-6mm]
+        % Second row
+        \node (F) [data, text width=2.1cm, fill=darkgreen!20] {Point Cloud}; & & & & \\
+        % Third row
+        & \node (poses) [data] {Camera Poses}; &
+        \node (matrices) [process,align=center] {Generate matrices\\{\scriptsize ARTwin variant}}; & &
+        \node (hall) [data]    {Aligned Hall}; \\
+        % Fourth row
+        & \node (renderers) [process] {Dockerized Renderers}; & & & \\ [2mm]
+        % Fifth row
+        \node (G) [process, anchor=text, xshift=-10mm] {build\textunderscore{}cutouts\textunderscore{}artwin.py}; & &
+        \node (E) [data, draw] {Aligned Dataset}; & &
+        \node (join) [process] {join\textunderscore{}datasets.py}; \\
+        % Sixth row
+        \node (H) [data, draw] {Cutouts}; & & & & \\
+    };
+    \graph [use existing nodes] {
+        A -> B -> C -- helper1 -> load -> hall -> join -> E;
+        hall -> [dashed] matrices -> [dashed] poses -> [dashed] renderers;
+        E -> G;
+    };
+    \gettikzxy{(F.south west)}{\fx}{\fy}
+    \gettikzxy{(renderers.south)}{\hx}{\hy}
+    \gettikzxy{(F.south)}{\fsx}{\fsy}
+    \gettikzxy{(G.north)}{\gx}{\gy}spot
+    \gettikzxy{(G.south)}{\gsx}{\gsy}
+    \gettikzxy{(H.north)}{\hhx}{\hhy}
+    \draw [very thin, densely dash dot, black] ($ (\fx, \hy) + (-0.1, -0.15) $) rectangle ($ (load.north east) + (0.1, 0.51) $);
+    \draw [very thin, densely dash dot, black] ($ (\fx, \hy) + (-0.15, -0.2) $) rectangle ($ (load.north east) + (0.05, 0.46) $);
+    \draw [rounded corners] (F) -| (helper1) -- (load.west);
+    \draw [->] (F) -- (\fsx, \gy);
+    \draw [->] (\fsx, \gsy) -- (\fsx, \hhy);
+    \draw [rounded corners, ->, dashed] (renderers) -| ($ (hall.south west) + (5mm, 0)$);
+    \draw [rounded corners, ->, dashed] ($ (F.south) + (1mm, 0) $) |- (renderers);
+    \node [above=of load.north, yshift=-5.5mm, font=\tiny, text=black] {repeated for 2 halls};
+\end{tikzpicture}

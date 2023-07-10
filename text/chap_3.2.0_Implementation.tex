@@ -1,0 +1,286 @@
+\section{Implementation}
+
+For purposes of the thesis, several code projects are leveraged, either built from the
+ground up by the author or based on top of the previous work of others.  Localization
+InLoc framework is based on the work of the article author Hajime Taira and further
+enhancements done by Pavel Lucivnak and Bastien Dechamps spread across several code
+repositories. From renderers, for Neural Rerendering in the Wild, the authors'
+implementation with surrounding scripts written by Bastien Dechamps is used as the base of
+further work. For surface splatting, the great work of Sebastian Lipponer, with some
+tweaks, is leveraged. Finally, the ray marching renderer based on OpenGL is entirely the
+author's work.
+
+Aside from the localization algorithm and renderers, scripts transforming dataset formats,
+described in~\cref{tab:model_conventions}, into notations and conventions used by InLoc
+and renderers described in~\cref{tab:agorithm_conventions} are also added; for further
+information, please see below.\\
+
+To be runnable in CIIRC computational cluster environment, which distributes jobs
+submitted by users by Slurm\footnote{\url{https://www.schedmd.com}}, batch job shell
+scripts are written. Slurm is an open-source, fault-tolerant, and highly scalable cluster
+management and job scheduling system for clusters of Linux-running machines. Slurm
+requires the batch job scripts to specify memory, CPU, and GPU requirements for
+encompassed computation. Specifying these in the code results in less time for experiment
+reproduction; it can also be immediately seen whether one has enough resources to run it
+in the first place. These bounds vary greatly for algorithms and models utilized in this
+thesis, from a few GB of RAM to almost 400 GB for InLoc processing the InLoc dataset, zero
+to eight GPUs for NRIW training, and typically a few CPU cores.\\
+
+Alongside these shell scripts, an attempt to have a reproducible experimental pipeline was
+made using \emph{Docker}/\emph{Singularity} and \emph{DVC}.
+
+Docker\footnote{\url{https://www.docker.com}} is an industry-grade platform allowing to
+build, test, and deploy applications quickly and robustly. Docker is an example of
+container-based virtualization, where a container is a running \uv{image} that packs
+everything the software needs for running, including libraries, system tools, code, and
+runtime. This approach is suitable for computational cluster environments as the code can
+be executed without relying on cluster administrators to install necessary packages
+globally for all users, which often leads to software version collisions.
+Containerization is a more lightweight virtualization technique compared to classical
+virtual machines resulting in quick startup times, lower memory requirements overhead, and
+a more user-friendly working experience suitable for both development and
+productionalisation. Technically, this is enabled by sharing underlying OS kernel by all
+running containers, contrary to virtual machines that are ran on bare metal with the
+so-called hypervisor, emulating their own OS kernels separated from other virtual machines
+running on the same hardware. To be more specific, the thesis relies on GPU-based
+computations; to be able to run GPU workloads in a container, there is an exception to the
+mentioned advantage of container-based virtualization to avoiding cluster administrators
+globally changing the cluster---suitable GPU drivers must be installed. Especially for all
+the renderers described to be able to use off-screen headless rendering (rendering to
+textures and saving them without displaying them on a monitor) on NVIDIA GPU cards used by
+the CIIRC computational cluster, a driver with bug-less EGL\footnote{EGL is an interface
+between Khronos rendering APIs such as OpenGL ES or OpenVG and the underlying native
+platform window system, \url{https://www.khronos.org/egl}.} support must be used, which is
+something not every driver version satisfies. CUDA and OpenGL libraries are then owned by
+each container, communicating with the shared driver on the OS level.
+
+Singularity\footnote{\url{https://sylabs.io}} is a containerization platform similar to
+Docker, with one notable exception leading to the adoption of the tool by computational
+cluster administrators (including CIIRC's) instead of the otherwise industry-leading and
+widely used Docker---it does not require administrative privileges from its users. For
+this thesis, descriptions of Docker images to be built are written where applicable. Once
+built, images are transformed into Singularity variants runnable on the cluster. This
+functionality is supported natively by \verb|singularity| binary as it is a common
+use-case for the tool.
+
+Data Version Control (DVC\footnote{\url{https://dvc.org}}) should help traceable and
+reproducible science by leveraging the Git version system to also version data,
+intermediate results, tie them with the exact code that produced them and thus track all
+ideas and experiments. It also can manage workflows which is valuable for defining
+reproducible data pipelines. The advantages of this tool are simplicity as it uses
+Git---which is a standard tool in code development---and workflow management is done
+through simple shell scripting that is well suited for the Slurm environment with running
+various Singularity containers as scheduled jobs. Though the idea is promising in the
+recent growth of Machine Learning Operations (MLOps), the tool proved unsuitable when used
+for datasets consisting of an enormous number of smaller files which is often the case in
+computer vision. DVC uses hashes to check consistency and the necessity to recompute some
+steps in a workflow, so it may take many hours to run even elementary transformations.
+The overhead of these hash computations is considerable, leading to the decision not to
+use DVC after all.
+
+\subsection{InLoc localization pipeline}
+
+The implementation of the
+pipeline\footnote{\url{https://github.com/Auratons/inlocciirc_demo}} is based on the
+author's Matlab sources\footnotei{.}{\url{https://github.com/HajimeTaira/InLoc_demo}} The
+source code is unified for better readability and verifiability; it is also generalized,
+as the original implementation targets specifically the InLoc
+dataset\footnotei{,}{\url{https://github.com/HajimeTaira/InLoc_dataset}}. Furthermore, as
+the original code lacks computation of scores and evaluation for a general dataset, the
+proposed approach of Pavel Lucivnak for the former is leveraged and further
+developed\footnotei{,}{\url{https://github.com/lucivpav/InLocCIIRC_demo}}
+\footnote{\url{https://github.com/lucivpav/InLocCIIRC_dataset}}
+
+The outline of the implementation is depicted by~\cref{fig:inloc_pathway}.  Cutouts for a
+dataset is a folder structure containing 3~files per DB image---pose file, the image
+itself, and a so-called \uv{XYZcut}. The cut is a $\text{M}\times\text{N}\times3$ array
+with XYZ coordinates of a surface that would be hit first by a ray cast from the center of
+the camera that took the DB image of size $\text{M}\times\text{N}$ (ignoring color
+dimension) through given pixel.  Computation of the cuts is not part of the source InLoc
+pipeline implementation, so one method of getting the cut from a particular
+renderer-generated  depth map and known camera parameters is
+implemented\footnotei{.}{\url{https://github.com/Auratons/inlocciirc_dataset}}
+
+A database and query image similarity score used later for image retrieval is computed as
+cosine similarity of normalized feature vectors. The original implementation using the
+matrix multiplication of query and database features stacked onto each other has immense
+memory requirements depleting all resources when executed on the considerably extensive
+InLoc dataset, thus some allowed linear algebra adjustments are made, lowering the
+requirements to reasonable numbers.
+
+For the image retrieval step, we use 100~closest database images to every given query
+photo based on the similarity score, which is the same number of candidates as the origin
+article.  For all these candidate poses, after transforming them into formats expected by
+the renderers explored in the thesis, we produce candidate renders and use those in the
+standard pose verification process described in~\cref{sec:inloc} based on the RootSIFT
+descriptors. After reranking the candidate positions based on the image-render similarity,
+10~best sorted candidates are outputted as in the original article.
+
+Evaluation is done by comparing angular and spatial L2 distances between the candidate and
+the query's true pose, if known. Specifically, for the InLoc dataset, the ground truth
+poses for the query set are not publicly disclosed. Only an online evaluation tool
+\url{https://www.visuallocalization.net/submission/} returning the fraction of correctly
+localized queries within the distance and angular threshold can be used.
+
+\begin{figure}
+    \centering
+    \input{graphics/inloc_pathway}
+    \caption{InLoc algorithm. The implementation
+    outline uses terminology from the article. Rectangles represent file(s) on the disk,
+    dark green ones denote algorithm inputs, and the rest are intermediate outputs except
+    algorithm outputs with a border drawn. Blue nodes of the outline denote processing
+    steps.  \uv{DB cutouts} are a database (DB) format the implementation expects.
+    \uv{File Lists} step scans the database and query, storing valid found examples and
+    query images into a file for further reference. The \uv{Renderer} step highlighted
+    with border is the main concern of the thesis.}
+    \label{fig:inloc_pathway}
+\end{figure}
+
+\subsection{Neural Rerendering in the Wild}
+
+For the Neural Rerendering in the Wild, the original implementation is also
+used\footnote{\url{https://github.com/google/neural_rerendering_in_the_wild}} without any
+substantial changes, just minor technical enhancements, such as support for alpha channel
+processing, etc\footnotei{.}{\url{https://github.com/Auratons/neural_rendering/}}
+
+All scripts needed on the path from a raw dataset to \uv{Aligned Dataset} and \uv{Cutouts}
+in~\cref{fig:artwin_dset_pathway}, \cref{fig:imc_dset_pathway}
+and~\cref{fig:inloc_dset_pathway} are also implemented in the repository. Aligned dataset
+is expected as input to the NRIW training process after packing into a TFRecord, similar
+to Cutouts being expected by the InLoc pipeline.
+
+For ARTwin, spherical photos need to be unrolled to 2D with the exact sampling approach as
+for the InLoc dataset, resulting in the set of reference images.  To be able to reuse
+scripting written initially for the IMC raw dataset, the creation of COLMAP-like camera
+and image information structure is implemented alongside unrolling in preprocess script.
+For depth information used within the aligned dataset, the point cloud is rendered via the
+load data script for ARTwin and IMC data and the render InLoc DB script for the remaining
+dataset. These scripts utilize the Pyrender python package internally, transversely
+\verb|GL_POINTS| OpenGL primitive for rendering. The approach is a common baseline with
+previous works on the topic.  To generate an aligned dataset with point cloud renders
+provided by other renderers, the \uv{Generate matrices} step is used, for both splatting
+and marching, as they share technically the same headless rendering component mentioned
+below.
+
+The aligned dataset is a structure containing, in the simplest case, a triplet of an
+image, a color render of the underlying scene representation by a renderer, and the
+respective depth map. The triplet forms a deep buffer mentioned in the article.  In the
+original article, the authors also use semantic masking in their deep buffers.  However,
+when rendering a novel view not seen in the training data, the semantic mask cannot be
+obtained from an actual photo. Authors thus train a separate segmentation network between
+the partial deep frame buffers and the semantic masks Si to tackle this issue. However,
+this makes the network more complex and lowers the prediction time performance.
+Semantically segmenting the point cloud might be used, but following~\citet{Bastien}, the
+additional complexity is unwanted.
+
+\begin{figure}
+    \centering
+    \input{graphics/artwin_dset_pathway}
+    \caption{ARTwin dataset pathway. The
+    schema display transformations the ARTwin dataset undergoes in order to get either
+    \uv{Aligned Dataset} expected by the Neural Rerendering in the Wild DNN training or
+    \uv{Cutouts} for the localization pipeline. Rectangles represent file(s) on the disk,
+    dark green ones denote algorithm inputs, and the rest are intermediate outputs except
+    algorithm outputs with a border drawn. Blue nodes of the outline denote processing
+    steps. The dashed paths are used to incorporate additional steps needed for
+    non-default renderers.  The default rendering with Pyrender is implemented in the load
+    data script.}
+    \label{fig:artwin_dset_pathway}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \input{graphics/inloc_dset_pathway}
+    \caption{InLoc Dataset pathway. The
+    schema display transformations the InLoc dataset undergoes in order to get either
+    \uv{Aligned Dataset} expected by the Neural Rerendering in the Wild DNN training or
+    \uv{Cutouts} for the localization pipeline. Rectangles represent file(s) on the disk,
+    dark green ones denote algorithm inputs, and the rest are intermediate outputs except
+    algorithm outputs with a border drawn. Blue nodes of the outline denote processing
+    steps. The dashed paths are used to incorporate additional steps needed for
+    non-default renderers.  The default rendering with Pyrender is implemented in the
+    render InLoc db script.}
+    \label{fig:inloc_dset_pathway}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \input{graphics/imc_dset_pathway}
+    \caption{IMC Dataset pathway. The schema
+    display transformations the IMC dataset undergoes in order to get either \uv{Aligned
+    Dataset} expected by the Neural Rerendering in the Wild DNN training or \uv{Cutouts}
+    for the localization pipeline. Rectangles represent file(s) on the disk, dark green
+    ones denote algorithm inputs, and the rest are intermediate outputs except algorithm
+    outputs with a border drawn. Blue nodes of the outline denote processing steps. The
+    dashed paths are used to incorporate additional steps needed for non-default
+    renderers.  The default rendering with Pyrender is implemented in the load data
+    script.}
+    \label{fig:imc_dset_pathway}
+\end{figure}
+
+The model is then trained with the same staged approach, where the appearance encoder is
+first pretrained on a proxy task with the triplet loss. As in the original article,
+$256\times256$ central crops of the deep buffers are used. For all the datasets, the whole
+train/val sets are used as the model is scene-dependent, which is especially true for the
+InLoc dataset, where the test set covers only a portion of the database.
+
+Finally, the training parameters are also used following the article, only with scaled
+batch sizes according to GPU memory available in the CIIRC cluster DGX nodes.
+
+\subsection{Spherical Ray Marcher}
+
+The spherical ray marcher is, on the high level, an
+OpenGL\footnote{\url{https://www.opengl.org}} application with both interactive and
+headless rendering capabilities. Interactive rendering includes FPS camera moved by
+keyboard, displaying real-time point cloud on user's monitor.  Headless mode generates
+specific view renders on the fly, without a monitor, directly to files on the disk, and it
+serves for dataset generation.
+
+The final texture depicting the requested view is computed from the main ray-casting loop
+implemented in CUDA\footnote{\url{https://developer.nvidia.com/cuda-toolkit}} due to usage
+of a KD-tree implementation based on the
+FLANN\footnote{\url{https://github.com/flann-lib/flann}} project. As the NRIW training and
+cutout computations require depth maps, the implementation also provides outputting depth
+texture alongside any RGB render.
+
+The algorithm needs radii for points to be rendered, the
+implementation\footnote{\url{https://github.com/Auratons/renderer_ray_marching}} can
+compute those and cache them alongside the input point cloud.  Requested renders are
+expected to be specified by the respective camera poses.
+
+
+\subsection{Surface Splatting}
+
+For surface splatting, Sebastian Lipponer's implementation was
+used\footnote{\url{https://github.com/sebastianlipponer/surface_splatting}} as a base, the
+project\footnote{\url{https://github.com/Auratons/renderer_surface_splatting/}} was
+enhanced with the same headless rendering capability as in the case of the ray marching.
+Also, a mechanism for loading radii of the point cloud being rendered was added, also
+reusing the component from the spherical ray marcher. Furthermore, from the same reason of
+the NRIW training process, depth buffer content is made accessible as another output from
+the renderer, the original implementation produced only RGB outputs.  Finally, a bug in
+camera handling of the underlying interactive rendering library GLviz of the same author
+was identified and resolved\footnote{\url{https://github.com/Auratons/glviz}} to have
+rendered views for the same view matrices unified across all renderers used. The bug was
+not obvious when using the FPS camera for simple exploration of the model being displayed,
+but when compared to outputs of a proper computer-vision grade renderer it became obvious.
+
+
+\begin{table}
+\caption{Comparison of input format expectations of algorithms used in the
+thesis from the transformations perspective. The upper row presents the algorithms, and
+the lower one contains abbreviations of conventions, where \emph{RC} means rendering
+convention, \emph{CP} means camera pose matrix. InLoc pipeline is agnostic to matrix
+convention as far as it is consistent with data generation. NRIW itself is trained only
+with images, noteworthy those are generated by the preceding rendering approaches with
+their conventions.}
+\centering
+    \begin{tabular}{c c c c c}
+    \toprule
+    Marching & Splatting & Pyrender & InLoc Pipeline & NRIW\\
+    \midrule
+    CP, RC & CP, RC & CP, RC & Agnostic & -- \\
+    \bottomrule
+    \end{tabular}
+\label{tab:agorithm_conventions}
+\end{table}

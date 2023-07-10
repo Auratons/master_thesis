@@ -37,7 +37,7 @@ we work with three of them; please see the description below.
 
 \begin{figure}
     \centering
-    \includegraphics[width=.9\linewidth]{../graphics/0217_mesh_artwin_render.png}
+    \includegraphics[width=.9\textwidth]{../graphics/0217_mesh_artwin_render.png}
     \caption{A render of one of the meshes created from the raw datasets' point cloud, camera pose is the same
     as for~\cref{fig:pyrender_artwin_render}. The mesh was created
     semi-manually, meaning that boxes, for instance, were meshed separately and then placed at the right
@@ -76,7 +76,7 @@ processes, ray-tracing is inherently recursive. Hence it is a more complex probl
 
 \begin{figure}
     \centering
-    \includegraphics[width=.9\linewidth]{../graphics/casting-tracing.png}
+    \includegraphics[width=.9\textwidth]{../graphics/casting-tracing.png}
     \caption{A demonstration of the difference between ray-casting and ray-tracing, together with an
     illustration of the recursive nature of the ray-casting algorithm. Taken
     from~\url{https://cg.informatik.uni-freiburg.de/course_notes/graphics_01_raycasting.pdf}.}\label{fig:casting_tracing}
@@ -202,7 +202,7 @@ overview of the process.
 
 \begin{figure}
     \centering
-    \includegraphics[width=.9\linewidth]{../graphics/nriw.png}
+    \includegraphics[width=.9\textwidth]{../graphics/nriw.png}
     \caption{Both neural networks are trained in a staged approach that pre-trains the appearance
     encoder~$E^a$ using a triplet loss, subsequently the rerenderer~$R$ is trained with standard
     reconstruction and GAN losses (right), and finally, fine-tuned together with~$E^a$.
@@ -252,7 +252,7 @@ of the pixel sampling grid, and all contributions from the overlapping splats ar
 \SaveVerb{term}|GL_POINTS|
 \begin{figure}
     \centering
-    \includegraphics[width=.9\linewidth]{../graphics/splatting_principle.png}
+    \includegraphics[width=.9\textwidth]{../graphics/splatting_principle.png}
     \caption{Point rendering by surface splatting compared to a naive approach that is used, for instance,
     by \protect\UseVerb{term} OpenGL primitive. (a) Naive forward projection and rendering of point samples
     assigning the projected point's color to the closest pixel in the screen space. (b) By splatting footprint
@@ -365,11 +365,11 @@ def SDFdifference(obj1_SDF, obj2_SDF):
 	\centering
 	\begin{subfigure}{.5\textwidth}
 		\centering
-		\includegraphics[width=.9\linewidth]{../graphics/csg.png}\label{fig:csg}
+		\includegraphics[width=.9\textwidth]{../graphics/csg.png}\label{fig:csg}
 	\end{subfigure}%
 	\begin{subfigure}{.5\textwidth}
 		\centering
-		\includegraphics[width=.9\linewidth]{../graphics/marching.png} \label{fig:marching}
+		\includegraphics[width=.9\textwidth]{../graphics/marching.png} \label{fig:marching}
 	\end{subfigure}
 	\caption{Left: CSG is built upon three primitive operations: intersection ($\cap$),
         union ($\cup$), and difference ($-$).
