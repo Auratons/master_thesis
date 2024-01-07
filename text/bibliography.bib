@@ -577,18 +577,22 @@
   pages={17-141},
   doi={10.1109/PBG.2005.194059}}
 
-@inproceedings{Splatting3,
+@inproceedings {Splatting3,
+booktitle = {SPBG'04 Symposium on Point - Based Graphics 2004},
+editor = {Markus Gross and Hanspeter Pfister and Marc Alexa and Szymon Rusinkiewicz},
+title = {Phong Splatting},
 author = {Botsch, Mario and Spernat, Michael and Kobbelt, Leif},
 year = {2004},
 month = {06},
 pages = {25-32},
-title = {Phong splatting},
-volume = {2004},
-journal = {Proceedings of Symposium on Point-Based Graphics},
-doi = {10.2312/SPBG/SPBG04/025-032}
+publisher = {The Eurographics Association},
+ISSN = {1811-7813},
+ISBN = {3-905673-09-6},
+DOI = {10.2312/SPBG/SPBG04/025-032}
 }
 
 @inproceedings{Splatting4,
+booktitle = {Proceedings of the Graphics Interface 2004 Conference},
 author = {Zwicker, Matthias and R\"{a}s\"{a}nen, Jussi and Botsch, Mario and Dachsbacher, Carsten and Pauly, Mark},
 title = {Perspective Accurate Splatting},
 year = {2004},
@@ -681,7 +685,7 @@ keywords = {point rendering, hardware accelerated graphics, level of detail}
  author = {Goodfellow, Ian and Pouget-Abadie, Jean and Mirza, Mehdi and Xu, Bing and Warde-Farley, David and Ozair, Sherjil and Courville, Aaron and Bengio, Yoshua},
  booktitle = {Advances in Neural Information Processing Systems},
  editor = {Z. Ghahramani and M. Welling and C. Cortes and N. Lawrence and K.Q. Weinberger},
- pages = {},
+ pages = {1-9},
  publisher = {Curran Associates, Inc.},
  title = {Generative Adversarial Nets},
  url = {https://proceedings.neurips.cc/paper/2014/file/5ca3e9b122f61f8f06494c97b1afccf3-Paper.pdf},
@@ -700,25 +704,27 @@ keywords = {point rendering, hardware accelerated graphics, level of detail}
   booktitle = {4th International Conference on Learning Representations, {ICLR} 2016,
                San Juan, Puerto Rico, May 2-4, 2016, Conference Track Proceedings},
   year      = {2016},
+  publisher = {ICLR},
   url       = {http://arxiv.org/abs/1511.06434},
   timestamp = {Thu, 25 Jul 2019 14:25:38 +0200},
   biburl    = {https://dblp.org/rec/journals/corr/RadfordMC15.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
-@inproceedings{ICLR2,
-  author    = {Andrew Brock and
-               Jeff Donahue and
-               Karen Simonyan},
-  title     = {Large Scale {GAN} Training for High Fidelity Natural Image Synthesis},
-  booktitle = {7th International Conference on Learning Representations, {ICLR} 2019,
-               New Orleans, LA, USA, May 6-9, 2019},
-  publisher = {OpenReview.net},
-  year      = {2019},
-  url       = {https://openreview.net/forum?id=B1xsqj09Fm},
-  timestamp = {Thu, 25 Jul 2019 13:03:18 +0200},
-  biburl    = {https://dblp.org/rec/conf/iclr/BrockDS19.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+@article{ICLR2,
+  author       = {Andrew Brock and
+                  Jeff Donahue and
+                  Karen Simonyan},
+  title        = {Large Scale {GAN} Training for High Fidelity Natural Image Synthesis},
+  journal      = {CoRR},
+  volume       = {abs/1809.11096},
+  year         = {2018},
+  url          = {http://arxiv.org/abs/1809.11096},
+  eprinttype    = {arXiv},
+  eprint       = {1809.11096},
+  timestamp    = {Fri, 05 Oct 2018 11:34:52 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-1809-11096.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
 
 @misc{VPT,
@@ -732,12 +738,20 @@ keywords = {point rendering, hardware accelerated graphics, level of detail}
   copyright = {arXiv.org perpetual, non-exclusive license}
 }
 
-@unknown{CDS,
-author = {Clark, Aidan and Donahue, Jeff and Simonyan, Karen},
-year = {2019},
-month = {07},
-pages = {},
-title = {Efficient Video Generation on Complex Datasets}
+@article{CDS,
+  author       = {Aidan Clark and
+                  Jeff Donahue and
+                  Karen Simonyan},
+  title        = {Efficient Video Generation on Complex Datasets},
+  journal      = {CoRR},
+  volume       = {abs/1907.06571},
+  year         = {2019},
+  url          = {http://arxiv.org/abs/1907.06571},
+  eprinttype   = {arXiv},
+  eprint       = {1907.06571},
+  timestamp    = {Wed, 17 Jul 2019 10:27:36 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-1907-06571.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
 
 @misc{DGM,
@@ -788,13 +802,19 @@ pages="501--518"
   pages={1430-1437},
   doi={10.1109/CVPR.2009.5206617}}
 
-@techreport{IBR1,
-    Author = {Debevec, Paul and Yu, Yizhou and Boshokov, George},
-    Title = {Efficient View-Dependent Image-Based Rendering with Projective Texture-Mapping},
-    Institution = {EECS Department, University of California, Berkeley},
-    Year = {1998},
-    URL = {http://www2.eecs.berkeley.edu/Pubs/TechRpts/1998/5676.html},
-    Number = {UCB/CSD-98-1003}
+@InProceedings{IBR1,
+author="Debevec, Paul
+and Yu, Yizhou
+and Borshukov, George",
+editor="Drettakis, George
+and Max, Nelson",
+title="Efficient View-Dependent Image-Based Rendering with Projective Texture-Mapping",
+booktitle="Rendering Techniques '98",
+year="1998",
+publisher="Springer Vienna",
+address="Vienna",
+pages="105--116",
+isbn="978-3-7091-6453-2"
 }
 
 @Article{IBR2,

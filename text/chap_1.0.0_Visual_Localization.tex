@@ -1,6 +1,6 @@
 \chapter{Visual Localization}
 
-As stated in~\fullref{intro}, visual localization is the task of finding
+As stated in~\nameref{intro}, visual localization is the task of finding
 the position of a camera that took a query photo relative to a reference scene
 representation, and it is one of the fundamental problems in computer vision.
 
@@ -85,16 +85,17 @@ and~\citet{VLocNetpp}.
 
 \section{InLoc}\label{sec:inloc}
 This visual localization method, so-called \emph{Indoor Visual Localization with Dense Matching
-and View Synthesis}, falls amid two-staged structure-based approaches combined with image retrieval. The first stage finds correspondences between a query image features and model of a scene, and the second estimates the camera pose.
+and View Synthesis}, falls amid two-staged structure-based approaches combined with image retrieval. The first stage finds
+correspondences between a query image features and model of a scene, and the second estimates the camera pose.
 The method's input is a database of RGBD
 images with known focal lengths (from EXIF data, for instance), and the method internally uses a point cloud 3D scene
-representation. The method focuses on indoor localization and addresses several 
-issues presented in~\fullref{intro}. Visual representation of the method with a short summary can be seen in~\cref{fig:inloc_intro}. 
+representation. The method focuses on indoor localization and addresses several
+issues presented in~\nameref{intro}. Visual representation of the method with a short summary can be seen in~\cref{fig:inloc_intro}.
 
 \begin{figure}
     \centering
     \includegraphics[width=.5\textwidth]{../graphics/inloc.png}
-    \caption{Given a database of geometrically-registered RGBD images, InLoc predicts
+    \caption[InLoc explained]{Given a database of geometrically-registered RGBD images, InLoc predicts
     the 6~DoF camera pose of a query RGB image by retrieving candidate images, estimating candidate camera poses, and selecting
     the best matching camera pose. Image taken from~\citet{InLoc}.}\label{fig:inloc_intro}
 \end{figure}
@@ -131,5 +132,5 @@ techniques alternative to the initial article's rendering process are described 
 The decision to use the InLoc method in the thesis was driven by the fact that it is the first method of its kind,
 state-of-the-art of its time that puts basis or plays a role of a baseline for
 other subsequent state-of-the-art methods~\citep{PoseCorrection}. Further, its source codes are publicly
-available\footnotei{,}{http://www.ok.sc.e.titech.ac.jp/INLOC/} whereas a subsequent paper~\citep{InLocRevisited}
+available\footnotei{,}{\url{http://www.ok.sc.e.titech.ac.jp/INLOC}} whereas a subsequent paper~\citep{InLocRevisited}
 presenting some improvements does not provide source codes.

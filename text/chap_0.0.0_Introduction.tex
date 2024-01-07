@@ -3,7 +3,7 @@
 
 In recent years, robots and other technological aids have been spreading into more and more
 areas of human endeavor. Nowadays, people encounter such machines in public spaces
-like museums, airports, hospitals, and others\footnotei{.}{\url{https://spring-h2020.eu/about-spring/}}
+like museums, airports, hospitals, and others\footnotei{.}{\url{https://spring-h2020.eu/about-spring}}
 Instead of just moving inside of a stationary
 protective box in a manufacturing facility, public spaces place high demands on
 the accuracy of localizing where the robot is, as the cost of a mistake can be high.
@@ -34,7 +34,7 @@ can provide only 3~degrees of freedom position estimation, and the accuracy of s
 Degradation outdoors comes from signal blockage or reflection due to high obstacles near the query position, 
 solar storms, and indoors from signal damping through walls. Under the
 best circumstances for a single query, GNSS can result in positioning within a few
-centimeters\footnotei{,}{\url{https://www.gps.gov/systems/gps/performance/accuracy/}}
+centimeters\footnotei{,}{\url{https://www.gps.gov/systems/gps/performance/accuracy}}
 other methods can provide an estimate with uncertainty measured in even hundreds of meters. Network-based methods
 find usage where an exact position is not that crucial, such as in asset tracking,
 analyzing traffic patterns, transportation planning, security, surveillance, and population
@@ -55,7 +55,7 @@ Thus, as the applications mentioned require higher accuracy, 6~DoF positions and
 must work either directly indoors or at least reliably under various troublesome conditions for
 network-based methods, visual localization has the potential to fulfill these
 requirements accurately up to a few centimeters and
-degrees\footnotei{.}{\url{https://www.visuallocalization.net/benchmark/}}
+degrees\footnotei{.}{\url{https://www.visuallocalization.net/benchmark}}
 
 Visual localization brings its own challenges stemming mainly from the scene representation.
 1) Illumination changes caused by artificial lighting and changes of the night and day
@@ -96,7 +96,8 @@ to lead to a significantly better overall pose accuracy.
 \begin{figure}
     \centering
     \includegraphics[width=.9\textwidth]{../graphics/0217_pyrender_artwin_render.png}
-    \caption{A render of one of the datasets' point cloud. We can see an issue with using OpenGL's point
+    \caption[Basic OpenGL point cloud rendering example]{A render of one of the datasets'
+    point cloud. We can see an issue with using OpenGL's point
     primitive. Closer surfaces (the column, for instance) to the camera are not continuous but have holes
     and points that should be occluded by closer surfaces being visible. Fixed screen space point
     primitive is thus not a reliable way of rendering a point cloud without per-render pre-computations
@@ -134,4 +135,4 @@ surface splatting algorithm~\citep{SurfaceSplatting} that models points as orien
 way as for ray marching-based renderer. Comparison to the work of~\citet{Bastien} is carried out on
 the InLoc Dataset~\citep{InLoc} and all the renderers are also applied to a dataset from the ARTwin
 project\footnotei{,}{\url{https://artwin-project.eu}} and the Phototourism
-dataset\footnotei{.}{\url{https://www.cs.ubc.ca/research/image-matching-challenge/2021/data/}}
+dataset\footnotei{.}{\url{https://www.cs.ubc.ca/research/image-matching-challenge/2021/data}}

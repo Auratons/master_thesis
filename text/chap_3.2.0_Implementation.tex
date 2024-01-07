@@ -78,7 +78,7 @@ steps in a workflow, so it may take many hours to run even elementary transforma
 The overhead of these hash computations is considerable, leading to the decision not to
 use DVC after all.
 
-\subsection{InLoc localization pipeline}
+\subsection{InLoc localization pipeline} \label{subsec:inloc}
 
 The implementation of the
 pipeline\footnote{\url{https://github.com/Auratons/inlocciirc_demo}} is based on the
@@ -92,14 +92,21 @@ developed\footnotei{,}{\url{https://github.com/lucivpav/InLocCIIRC_demo}}
 \footnote{\url{https://github.com/lucivpav/InLocCIIRC_dataset}}
 
 The outline of the implementation is depicted by~\cref{fig:inloc_pathway}.  Cutouts for a
-dataset is a folder structure containing 3~files per DB image---pose file, the image
+dataset is a folder structure containing 3~files per database (DB) image---pose file, the image
 itself, and a so-called \uv{XYZcut}. The cut is a $\text{M}\times\text{N}\times3$ array
 with XYZ coordinates of a surface that would be hit first by a ray cast from the center of
 the camera that took the DB image of size $\text{M}\times\text{N}$ (ignoring color
-dimension) through given pixel.  Computation of the cuts is not part of the source InLoc
+dimension) through given pixel. Computation of the cuts is not part of the source InLoc
 pipeline implementation, so one method of getting the cut from a particular
 renderer-generated  depth map and known camera parameters is
 implemented\footnotei{.}{\url{https://github.com/Auratons/inlocciirc_dataset}}
+The InLoc dataset contains default XYZCuts. However, as mentioned, there is no generation
+script enclosed. The method implemented in the thesis uses depth maps to reproject from 2D
+to 3D space. Since these depend on the renderer, all XYZCut are recomputed per rendering
+approach. The default cuts were checked for the depiction of the background---when the ray
+does not hit anything in the given view frustum, the respective coordinate is a triplet of
+NaNs. Since OpenGL-based renderers typically output zero as the depth value of these "not hit"
+cases, reprojected points close to the origin of the cut are filtered.
 
 A database and query image similarity score used later for image retrieval is computed as
 cosine similarity of normalized feature vectors. The original implementation using the
@@ -125,7 +132,7 @@ localized queries within the distance and angular threshold can be used.
 \begin{figure}
     \centering
     \input{graphics/inloc_pathway}
-    \caption{InLoc algorithm. The implementation
+    \caption[InLoc algorithm]{InLoc algorithm. The implementation
     outline uses terminology from the article. Rectangles represent file(s) on the disk,
     dark green ones denote algorithm inputs, and the rest are intermediate outputs except
     algorithm outputs with a border drawn. Blue nodes of the outline denote processing
@@ -141,7 +148,7 @@ localized queries within the distance and angular threshold can be used.
 For the Neural Rerendering in the Wild, the original implementation is also
 used\footnote{\url{https://github.com/google/neural_rerendering_in_the_wild}} without any
 substantial changes, just minor technical enhancements, such as support for alpha channel
-processing, etc\footnotei{.}{\url{https://github.com/Auratons/neural_rendering/}}
+processing, etc\footnotei{.}{\url{https://github.com/Auratons/neural_rendering}}
 
 All scripts needed on the path from a raw dataset to \uv{Aligned Dataset} and \uv{Cutouts}
 in~\cref{fig:artwin_dset_pathway}, \cref{fig:imc_dset_pathway}
@@ -171,13 +178,13 @@ obtained from an actual photo. Authors thus train a separate segmentation networ
 the partial deep frame buffers and the semantic masks Si to tackle this issue. However,
 this makes the network more complex and lowers the prediction time performance.
 Semantically segmenting the point cloud might be used, but following~\citet{Bastien}, the
-additional complexity is unwanted.
+additional complexity is avoided.
 
 \begin{figure}
     \centering
     \input{graphics/artwin_dset_pathway}
-    \caption{ARTwin dataset pathway. The
-    schema display transformations the ARTwin dataset undergoes in order to get either
+    \caption[ARTwin Dataset pathway]{ARTwin dataset pathway. The
+    schema displays transformations the ARTwin dataset undergoes in order to get either
     \uv{Aligned Dataset} expected by the Neural Rerendering in the Wild DNN training or
     \uv{Cutouts} for the localization pipeline. Rectangles represent file(s) on the disk,
     dark green ones denote algorithm inputs, and the rest are intermediate outputs except
@@ -191,8 +198,8 @@ additional complexity is unwanted.
 \begin{figure}
     \centering
     \input{graphics/inloc_dset_pathway}
-    \caption{InLoc Dataset pathway. The
-    schema display transformations the InLoc dataset undergoes in order to get either
+    \caption[InLoc Dataset pathway]{InLoc Dataset pathway. The
+    schema displays transformations the InLoc dataset undergoes in order to get either
     \uv{Aligned Dataset} expected by the Neural Rerendering in the Wild DNN training or
     \uv{Cutouts} for the localization pipeline. Rectangles represent file(s) on the disk,
     dark green ones denote algorithm inputs, and the rest are intermediate outputs except
@@ -206,8 +213,8 @@ additional complexity is unwanted.
 \begin{figure}
     \centering
     \input{graphics/imc_dset_pathway}
-    \caption{IMC Dataset pathway. The schema
-    display transformations the IMC dataset undergoes in order to get either \uv{Aligned
+    \caption[IMC Dataset pathway]{IMC Dataset pathway. The schema
+    displays transformations the IMC dataset undergoes in order to get either \uv{Aligned
     Dataset} expected by the Neural Rerendering in the Wild DNN training or \uv{Cutouts}
     for the localization pipeline. Rectangles represent file(s) on the disk, dark green
     ones denote algorithm inputs, and the rest are intermediate outputs except algorithm
@@ -225,7 +232,10 @@ train/val sets are used as the model is scene-dependent, which is especially tru
 InLoc dataset, where the test set covers only a portion of the database.
 
 Finally, the training parameters are also used following the article, only with scaled
-batch sizes according to GPU memory available in the CIIRC cluster DGX nodes.
+batch sizes according to GPU memory available in the CIIRC cluster DGX nodes. That means
+training on 8~GPU for around four days for the complete staged pipeline, with the Adam optimizer
+set with with parameters $\beta_1$, $\beta_2$ set to $0$, $0.99$, respectively, and
+the learning rate equal to $0.001$.
 
 \subsection{Spherical Ray Marcher}
 
@@ -243,31 +253,43 @@ FLANN\footnote{\url{https://github.com/flann-lib/flann}} project. As the NRIW tr
 cutout computations require depth maps, the implementation also provides outputting depth
 texture alongside any RGB render.
 
-The algorithm needs radii for points to be rendered, the
+The algorithm needs radii for points to be rendered; the
 implementation\footnote{\url{https://github.com/Auratons/renderer_ray_marching}} can
-compute those and cache them alongside the input point cloud.  Requested renders are
-expected to be specified by the respective camera poses.
+compute those based on a distance to the nearest neighbor and cache them alongside the
+input point cloud. From this process, one hyperparameter stems out as the maximal displayable
+diameter. For outliers, radii may be too large, causing vast portions of a resulting
+render to be hidden behind giant spheres. The maximum can be determined as a percentile
+of cached radii for a given point cloud. Requested renders are expected to be
+specified by the respective camera poses and camera calibration matrices.
 
 
 \subsection{Surface Splatting}
 
 For surface splatting, Sebastian Lipponer's implementation was
 used\footnote{\url{https://github.com/sebastianlipponer/surface_splatting}} as a base, the
-project\footnote{\url{https://github.com/Auratons/renderer_surface_splatting/}} was
-enhanced with the same headless rendering capability as in the case of the ray marching.
-Also, a mechanism for loading radii of the point cloud being rendered was added, also
-reusing the component from the spherical ray marcher. Furthermore, from the same reason of
-the NRIW training process, depth buffer content is made accessible as another output from
-the renderer, the original implementation produced only RGB outputs.  Finally, a bug in
+project\footnote{\url{https://github.com/Auratons/renderer_surface_splatting}} was
+enhanced with the same headless rendering capability as in the case of the ray marching,
+expecting the same per-render format of camera poses and camera calibration matrices.
+Also, a mechanism for loading the radii of the point cloud being rendered was added, further
+reusing the component from the spherical ray marcher. Furthermore, for the same NRIW
+training process reason, the depth buffer content is made accessible as another output from
+the renderer. The original implementation produced only RGB outputs. Finally, a bug in
 camera handling of the underlying interactive rendering library GLviz of the same author
 was identified and resolved\footnote{\url{https://github.com/Auratons/glviz}} to have
-rendered views for the same view matrices unified across all renderers used. The bug was
-not obvious when using the FPS camera for simple exploration of the model being displayed,
-but when compared to outputs of a proper computer-vision grade renderer it became obvious.
+rendered views for the same camera poses unified across all renderers used. The bug is
+not apparent when using the FPS camera to explore the displayed scene model. However,
+when comparing to the outputs of a proper computer-vision grade renderer, it becomes obvious.
+
+The algorithm needs not only per-point radii but also normal vectors in order to orient
+splats properly. For computing those, Meshlab\footnote{\url{https://www.meshlab.net}} and,
+for automation, Pymeshlab\footnote{\url{https://pymeshlab.readthedocs.io}} tools were
+used. The maximal diameter hyperparameter is used in the same sense as for the Marcher.
 
 
 \begin{table}
-\caption{Comparison of input format expectations of algorithms used in the
+\caption[Comparison of input format expectations of algorithms used in the
+thesis from the transformations perspective]{Comparison of input format
+expectations of algorithms used in the
 thesis from the transformations perspective. The upper row presents the algorithms, and
 the lower one contains abbreviations of conventions, where \emph{RC} means rendering
 convention, \emph{CP} means camera pose matrix. InLoc pipeline is agnostic to matrix

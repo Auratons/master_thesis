@@ -50,7 +50,7 @@
 \usepackage{booktabs}          % improved horizontal lines in tables
 \usepackage{paralist}          % improved enumerate and itemize
 \usepackage{xcolor}            % typesetting in color
-\usepackage{url}
+\usepackage{xurl}
 \usepackage{hyperref}
 \usepackage{nameref}
 \usepackage{macros}
@@ -61,9 +61,12 @@
 \usepackage{algpseudocode}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{colortbl}
 \usepackage[capitalise]{cleveref}
 \usepackage{tikz}
+\usepackage{siunitx}
 \usetikzlibrary{positioning, graphs, arrows.meta, calc, quotes}
+\usepackage[nohyperlinks]{acronym}
 
 
 \tikzset{process/.style={
@@ -176,11 +179,13 @@ Rendering influence on localization performance is investigated.
 
 \tableofcontents
 
-%%% Each chapter is kept in a separate file
+%% Each chapter is kept in a separate file
 \include{chap_0.0.0_Introduction}
 \include{chap_1.0.0_Visual_Localization}
 \include{chap_2.0.0_Pointcloud_Rendering}
 \include{chap_3.0.0_Pose_Verification}
+\include{chap_3.1.0_Datasets}
+\include{chap_3.2.0_Implementation}
 \include{chap_4.0.0_Conclusion}
 
 %%% Bibliography
@@ -196,19 +201,28 @@ Rendering influence on localization performance is investigated.
 %%% Abbreviations used in the thesis, if any, including their explanation
 %%% In mathematical theses, it could be better to move the list of abbreviations to the beginning of the thesis.
 \chapwithtoc{List of Abbreviations}
-SfM
-NN
-DNN
-CNN
-CG
-GAN
-VAE
-VGG
-SDF
-CSG
-DB
-CV
-IMC
+\begin{acronym}
+ \acro{CG}{Computer Graphics}
+ \acro{CNN}{Convolutional Neural Network}
+ \acro{CSG}{Constructive Solid Geometry}
+ \acro{CV}{Computer Vision}
+ \acro{DB}{Database}
+ \acro{DNN}{Deep Neural Network}
+ \acro{EWA}{Elliptical Weighted Average}
+ \acro{FoV}{Field of View}
+ \acro{GAN}{Generative Adversarial Networks}
+ \acro{GPU}{Graphics Processing Unit}
+ \acro{IMC}{Image Matching Challenge}
+ \acro{MVS}{MultiView Stereo}
+ \acro{NN}{Neural Network}
+ \acro{NRIW}{Neural Rerendering in the Wild}
+ \acro{OS}{Operating System}
+ \acro{RGB(D)}{Red Green Blue (Depth)}
+ \acro{SDF}{Signed Distance Functions}
+ \acro{SfM}{Structure from Motion}
+ \acro{VAE}{Variational Autoencoder}
+ \acro{VGG}{Visual Geometry Group}
+\end{acronym}
 
 %%% Attachments to the master thesis, if any. Each attachment must be
 %%% referred to at least once from the text of the thesis. Attachments

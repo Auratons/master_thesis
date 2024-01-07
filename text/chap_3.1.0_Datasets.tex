@@ -9,7 +9,7 @@ the Industry \& Construction 4.0 Solutions project called ARTwin, financially su
 the European Union's Horizon 2020 research and innovation program. Finally, an outdoor
 dataset is covered by the inclusion of the open-source Phototourism dataset from the Image
 Matching Challenge
-2021\footnotei{.}{\url{https://www.cs.ubc.ca/research/image-matching-challenge/2021/}}
+2021\footnotei{.}{\url{https://www.cs.ubc.ca/research/image-matching-challenge/2021}}
 
 \subsection{InLoc Dataset}
 
@@ -69,7 +69,7 @@ used to speed up the localization performance.
         \centering
         \includegraphics[width=.9\textwidth]{../graphics/DUC_cutout_003_0_0.jpg}
     \end{subfigure}
-    \caption{Sample images from InLoc dataset database images.}\label{fig:inloc_dataset}
+    \caption[Samples from InLoc dataset database images]{Samples from InLoc dataset database images.}\label{fig:inloc_dataset}
 \end{figure}
 
 \subsection{ARTwin Dataset}
@@ -106,14 +106,15 @@ position and orientation quaternion per panoramic scan.
 		\centering
 		\includegraphics[width=.9\textwidth]{../graphics/2019-09-28_08.31.29_00000_x0_z60_reference.png}
 	\end{subfigure}
-	\caption{Sample flattened images from ARTwin dataset, on the left hall
+	\caption[Sample flattened images from ARTwin dataset]{Sample
+        flattened images from ARTwin dataset, on the left hall
         \protect\UseVerb{hall53} is presented, on the right
         \protect\UseVerb{hall29}.}\label{fig:artwin_dataset}
 \end{figure}
 
 \subsection{Phototourism Dataset}
 
-The smallest datasets taken from the Image Matching Challenge data, photo-tourism image
+The smallest datasets taken from the Image Matching Challenge (IMC) data, photo-tourism image
 collections depicts several popular landmarks, collected from the Yahoo Flickr Creative
 Commons 100M (YFCC) dataset. Namely, Hagia Sophia Interior, Pantheon Exterior, and Grand
 Place Brussels collections were used. These datasets have around $1\,000$~photos each
@@ -147,7 +148,8 @@ see~\cref{fig:imc_dataset}.
 		\centering
 		\includegraphics[width=.9\textwidth]{../graphics/pantheon_00927614_8536847775.jpg}
 	\end{subfigure}
-	\caption{Examples of image collection from Phototourism dataset taken \uv{from
+	\caption[Sample images from Phototourism dataset]{Sample images from
+        Phototourism dataset taken \uv{from
         the wild}, stretching various aspect ratios, sizes, time of the day of the
         aquisition, and varying lighting conditions present in the data. In the top
         row there are images of Grand Place in Brussels, below of interior of Hagia
@@ -173,8 +175,9 @@ Another side-by-side comparison of the datasets can be found in~\cref{tab:datase
 presenting their basic statistical features.
 
 \begin{table}
-\caption{Comparison of conventions and notations found in scene representations of all
-datasets explored in the thesis.}
+\caption[Comparison of conventions and notations found in scene representations of all
+datasets explored in the thesis]{Comparison of conventions and notations found
+in scene representations of all datasets explored in the thesis.}
 \centering
     \begin{tabular}{p{4cm} p{4cm} p{4cm}}
     \toprule
@@ -187,7 +190,7 @@ datasets explored in the thesis.}
     for localization disambiguation. & Right-handed coordinate system, scans use
     convention where in order to be rendered by an OpenGL camera to match database images,
     in sequence, x-y and y-z axes must be switched. For each scan, a transformation from
-    local to the defined global CS is known. & Right-handed coordinate system, model in CV
+    local to the defined global CS is known. & Right-handed coordinate system, model in computer vision (CV)
     notation. To render properly by an OpenGL camera to match database images, y and z
     axes must be inverted.  COLMAP-generated per-view matrices are view matrices.\\
     \bottomrule
@@ -196,7 +199,8 @@ datasets explored in the thesis.}
 \end{table}
 
 \begin{table}
-\caption{Comparison of various features of all datasets used in the thesis.
+\caption[Comparison of various features of all datasets used in the thesis]{
+Comparison of various features of all datasets used in the thesis.
 InLoc test set specified here is generated from the dataset so that we have the ground
 truth poses, otherwise the online evaluation tool would need to be used. Number of points
 in a scan refers to the mean of points count for iInLoc and ARTwin datasets, and to the

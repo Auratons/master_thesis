@@ -18,8 +18,9 @@ expects and must be addressed by implementation to obtain valid localization res
 
 \begin{figure}
     \centering
-    \includegraphics[width=.7\textwidth]{../graphics/cs_conventions.pdf}
-    \caption{Examples of various camera / coordinate frame conventions used by
+    \includegraphics[width=.7\textwidth]{../graphics/cs_conventions.png}
+    \caption[Examples of various camera\,/\,coordinate frame conventions]{
+    Examples of various camera\,/\,coordinate frame conventions used by
     common programmatic tools in fields dealing with computer graphics.
     Taken from~\url{https://medium.com/check-visit-computer-vision/converting-camera-poses-from-opencv-to-opengl-can-be-easy-27ff6c413bdb}.}\label{fig:cs_conventions}
 \end{figure}
@@ -64,13 +65,3 @@ matrices, and the implementation must correctly distinguish between the actual m
 these 16~real numbers, including how the matrix is stored on the disk. We refer to them as
 the \emph{view matrix} transforming from world to view space and \emph{camera pose}
 representing the opposite, inverse transformation.
-
-\input{text/chap_3.1.0_Datasets}
-\input{text/chap_3.2.0_Implementation}
-
-
-\section{Experiments} % Ukazka toho, jak presny je pointcloud ze skeneru
-%/home/kremeto1/neural_rendering/datasets/post_processed/inloc/inloc_rendered_splatting/val/00875_color.png
-
-% pro splatting a marcher se maximalizoval prumer bodu na 0.01 kvuli outliers, kterych
-% je v porovnani s 3d scanningem u % colmapu dost
