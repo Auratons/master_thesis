@@ -91,21 +91,24 @@
 
 % Thesis title in English (exactly as in the formal assignment)
 \def\ThesisTitle{Evaluating Point Cloud Rendering Approaches for Camera Pose Verification}
+\def\NazevPrace{Použití metod zobrazení mračna bodů pro ověření polohy kamery}
 
 % Author of the thesis
 \def\ThesisAuthor{Tomáš Kremel}
 
 % Year when the thesis is submitted
-\def\YearSubmitted{2022}
+\def\YearSubmitted{2024}
 
 % Name of the department or institute, where the work was officially assigned
 % (according to the Organizational Structure of MFF UK in English,
 % or a full name of a department outside MFF)
-\def\Department{Department of Algebra}
+\def\Department{Department of Software and Computer Science Education}
+\def\Katedra{Katedra softwaru a výuky informatiky}
 
 % Department of Theoretical Computer Science and Mathematical Logic
 % Is it a department (katedra), or an institute (ústav)?
 \def\DeptType{Department}
+\def\TypPracoviste{Katedra}
 
 % Thesis supervisor: name, surname and titles
 \def\SupervisorA{doc. Ing. Tomáš Pajdla, Ph.D.}
@@ -113,6 +116,7 @@
 
 % Supervisor's department (again according to Organizational structure of MFF)
 \def\SupervisorsDepartment{Department of Algebra}
+\def\KatedraVedouciho{Katedra algebry}
 
 % Study programme and specialization
 \def\StudyProgramme{Computer Science}
@@ -128,38 +132,70 @@ to thank The Czech Institute of Informatics, Robotics, and Cybernetics
 (CIIRC) for providing me with all the
 necessary GPU resources required for computations. Further, I would like
 to recognize my friends Tomáš Souček and Vojtěch Kužel for their consultations.
-Finally, my admiration and credit go to my wife, without whom this thesis
+Finally, the credit goes to Sára Filípková, without whom this thesis
 would not be a reality.
 }
 
 % Abstract (recommended length around 80-200 words; this is not a copy of your thesis assignment!)
 \def\Abstract{%
 Visual localization is the problem of estimating the 6~degrees of freedom
-(DoF) camera pose from which a query image was taken relative to a known
+camera pose from which a query image was taken relative to a known
 reference scene representation. It is the key for applications such as
 Augmented, Mixed, and Virtual Reality, as well as autonomous robotics
 such as drones or self-driving cars.
 
-This thesis focuses on the pose verification and ranking step of a visual
-localization pipeline that uses 3D point clouds and 2D-3D correspondences
-between the query image and 3D scene points for candidate camera poses
-estimations. The thesis explores point cloud rendering approaches as they
-are utilized in the verification step – the render of the discretized
-scene from a given candidate position is compared to the actual query
-image to asses if the given couple depicts the same place.
+This thesis focuses on a visual localization pipeline, especially on
+its pose verification and reranking step. The pipeline uses 3D point clouds
+and 2D-3D correspondences between the query image and 3D scene points for
+candidate camera poses estimations. The thesis explores point cloud
+rendering approaches as they are utilized in the pipeline and the
+verification step---the render of the discretized scene from a given
+candidate position is compared to the actual query image to asses if the
+given couple depicts the same place.
 
 One of the main challenges of such rendering is occlusion handling. Due
 to the sparsity of points employed for otherwise continuous real world
 representation, information about what lies in the front and what is
 hidden can be easily lost when projected to the 2D image. Rendering
 approaches explored in this thesis focus on the challenge directly or
-as a component for training a novel view synthesis DNN-based renderer.
+as a component of a novel view synthesis DNN-based renderer.
 Rendering influence on localization performance is investigated.
 }
 
 % 3 to 5 keywords (recommended), each enclosed in curly braces
 \def\Keywords{%
 {point clouds,} {rendering,} {neural rendering,} {localization}
+}
+
+\def\Abstrakt{%
+Vizuální lokalizace je problém odhadování parametrů šesti stupňů volnosti
+pozice kamery, z~níž byla pořízena dotazovaná fotografie, přičemž pozice
+je vztažena ke známé reprezentaci referenčního prostředí. Řešení tohoto
+problému je klíčové v~aplikacích jako jsou rozšířená, smíšená a~virtuální
+realita, stejně tak v~oblasti autonomní robotiky zahrnující drony
+a~samořiditelné automobily.
+
+Tato práce se soustředí na vizuální lokalizačního algoritmus, zejména na
+jeho verifikační a~přeřazovací krok. Tento algoritmus interně využívá
+tří dimenzionální mračna bodů a~hledání korespondencí mezi těmito body
+a~dotazovanou fotografií pro nalezení odhadů kandidátních pozic kamery.
+Práce zkoumá přístupy k~renderování mračen bodů a jejich využití v~rámci
+algoritmu a jeho verifikačního kroku~-- render diskretizovaného prostředí
+z~konkrétní kandidátní pozice se v něm porovnává s~danou dotazovanou fotografií
+za účelem určení toho, zda oba pohledy zobrazují to samé místo.
+
+Jedna z~hlavních výzev renderingu diskretizovaného prostředí jsou okluze.
+Kvůli řídkosti bodů využitých jako reprezentace jinak spojitého reálného
+světa může být informace o~tom co leží v~popředí a co v~pozadí lehce
+ztracena při promítnutí bodů na dvou dimenzionální obraz. Přístupy
+k~renderování zkoumané v~této práci se soustředí na renderování bodů přímo
+nebo jako komponentu rendereru \uv{nových pohledů} využívající hlubokých
+neuronových sítí. Je zde prověřen vliv těchto renderovacích přístupů na
+přesnost lokalizace.
+}
+
+\def\KlicovaSlova{%
+{mračna bodů,} {rendering,} {neurální rendering,} {lokalizace}
 }
 
 %% The hyperref package for clickable links in PDF and also for storing

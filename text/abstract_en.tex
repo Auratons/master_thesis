@@ -1,9 +1,17 @@
-% Metadata to be stored in PDF, see documentation of the pdfx package for more details.
+%%% A template for a simple PDF/A file like a stand-alone abstract of the thesis.
 
-\Author{Tomáš Kremel}
-\Title{Evaluating Point Cloud Rendering Approaches for Camera Pose Verification}
-\Keywords{point clouds\sep rendering\sep neural rendering \sep localization}
-\Subject{Visual localization is the problem of estimating the 6~degrees of freedom
+\documentclass[12pt]{report}
+
+\usepackage[a4paper, hmargin=1in, vmargin=1in]{geometry}
+\usepackage[a-2u]{pdfx}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textcomp}
+
+\begin{document}
+
+Visual localization is the problem of estimating the 6~degrees of freedom
 camera pose from which a query image was taken relative to a known
 reference scene representation. It is the key for applications such as
 Augmented, Mixed, and Virtual Reality, as well as autonomous robotics
@@ -24,5 +32,6 @@ representation, information about what lies in the front and what is
 hidden can be easily lost when projected to the 2D image. Rendering
 approaches explored in this thesis focus on the challenge directly or
 as a component of a novel view synthesis DNN-based renderer.
-Rendering influence on localization performance is investigated.}
-\Publisher{Charles University}
+Rendering influence on localization performance is investigated.
+
+\end{document}

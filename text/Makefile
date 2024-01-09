@@ -3,7 +3,7 @@ OUTS_DIR = outs
 # Into this folder, other packages can be downloaded.
 export TEXINPUTS = ../tex_deps//:
 
-all: restore_outs thesis.pdf abstract.pdf hide_outs
+all: restore_outs thesis.pdf abstract_en.pdf abstract_cs.pdf hide_outs
 
 # Exit 0 here is for case when nothing is present in OUTS_DIR,
 # which makes `mv` fail and `make` then as well.
@@ -18,7 +18,11 @@ thesis.pdf: thesis.tex $(wildcard *.tex) bibliography.bib thesis.xmpdata
 	pdflatex $<
 	pdflatex $<
 
-abstract.pdf: abstract.tex abstract.xmpdata
+abstract_en.pdf: abstract_en.tex abstract_en.xmpdata
+	pdflatex $<
+	pdflatex $<
+
+abstract_cs.pdf: abstract_cs.tex abstract_cs.xmpdata
 	pdflatex $<
 	pdflatex $<
 
@@ -30,4 +34,4 @@ hide_outs:
 clean:
 	rm -f  $(OUTS)
 	rm -fr $(OUTS_DIR)
-	rm -f  thesis.pdf abstract.pdf
+	rm -f  thesis.pdf abstract_en.pdf abstract_cs.pdf

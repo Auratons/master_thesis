@@ -1,0 +1,41 @@
+%%% A template for a simple PDF/A file like a stand-alone abstract of the thesis.
+
+\documentclass[12pt]{report}
+
+\usepackage[a4paper, hmargin=1in, vmargin=1in]{geometry}
+\usepackage[a-2u]{pdfx}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textcomp}
+
+\providecommand{\uv}[1]{\raisebox{-1.3ex}{’’}#1‘‘}
+
+\begin{document}
+
+Vizuální lokalizace je problém odhadování parametrů šesti stupňů volnosti
+pozice kamery, z~níž byla pořízena dotazovaná fotografie, přičemž pozice
+je vztažena ke známé reprezentaci referenčního prostředí. Řešení tohoto
+problému je klíčové v~aplikacích jako jsou rozšířená, smíšená a~virtuální
+realita, stejně tak v~oblasti autonomní robotiky zahrnující drony
+a~samořiditelné automobily.
+
+Tato práce se soustředí na vizuální lokalizačního algoritmus, zejména na
+jeho verifikační a~přeřazovací krok. Tento algoritmus interně využívá
+tří dimenzionální mračna bodů a~hledání korespondencí mezi těmito body
+a~dotazovanou fotografií pro nalezení odhadů kandidátních pozic kamery.
+Práce zkoumá přístupy k~renderování mračen bodů a jejich využití v~rámci
+algoritmu a jeho verifikačního kroku~-- render diskretizovaného prostředí
+z~konkrétní kandidátní pozice se v něm porovnává s~danou dotazovanou fotografií
+za účelem určení toho, zda oba pohledy zobrazují to samé místo.
+
+Jedna z~hlavních výzev renderingu diskretizovaného prostředí jsou okluze.
+Kvůli řídkosti bodů využitých jako reprezentace jinak spojitého reálného
+světa může být informace o~tom co leží v~popředí a co v~pozadí lehce
+ztracena při promítnutí bodů na dvou dimenzionální obraz. Přístupy
+k~renderování zkoumané v~této práci se soustředí na renderování bodů přímo
+nebo jako komponentu rendereru \uv{nových pohledů} využívající hlubokých
+neuronových sítí. Je zde prověřen vliv těchto renderovacích přístupů na
+přesnost lokalizace.
+
+\end{document}
