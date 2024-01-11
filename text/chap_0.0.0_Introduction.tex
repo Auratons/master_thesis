@@ -31,7 +31,7 @@ radio signals from various sources. These sources include Wi-Fi, Bluetooth Low E
 Satellite Systems (GNSS, such as GPS, Galileo), and cellular networks~\citep{Trogh2019}. All of these positioning
 data sources suffer from shared limitations---they
 can provide only 3~degrees of freedom position estimation, and the accuracy of such estimation can vary a lot.
-Degradation outdoors comes from signal blockage or reflection due to high obstacles near the query position, 
+Degradation outdoors comes from signal blockage or reflection due to high obstacles near the query position,
 solar storms, and indoors from signal damping through walls. Under the
 best circumstances for a single query, GNSS can result in positioning within a few
 centimeters\footnotei{,}{\url{https://www.gps.gov/systems/gps/performance/accuracy}}
@@ -43,7 +43,7 @@ movements tracking during disasters as a more specific example~\citep{Trogh2019}
 Network-based localization methods typically build upon the triangulation of a few measurements
 of time-of-flight or signal strength from several sources, such as satellites, cell towers,
 and access points, possibly combined with other techniques to reach better accuracy.
-On the other hand, visual localization uses the rich visual information encoded in images to 
+On the other hand, visual localization uses the rich visual information encoded in images to
 estimate the source camera's pose. One family of localization approaches that can be easily compared to
 network-based methods relies on establishing an ideally high number of correspondences between
 features of a query image and those of the scene representation. These correspondences are then
@@ -83,13 +83,13 @@ modern 3D scanners, such as LiDAR (an acronym for \uv{light detection and rangin
 The latter is typically used by mobile robots moving within
 a particular environment. When computed in real-time, the SfM and the VSLAM processes
 are equivalent, sharing the same technical aspects and functionalities~\citep{VNAV}. Currently,
-state-of-the-art approaches use matches between a 2D image and a 3D environment model, 
-producing several candidate poses for a query image. Computed poses are verified and ranked based % TODO add citations
+state-of-the-art approaches use matches between a 2D image and a 3D environment model,
+producing several candidate poses for a query image. Computed poses are verified and ranked based
 on sparse evidence, e.g., on the number
 of inlier matches found by, e.g., RANSAC algorithm~\citep{RANSAC}. Due to the inherent candidate pose
 instability and imperfections mentioned in the previous paragraph caused by the presence of repeated structures and
 global ambiguities, a (weighted) inlier count has been shown as not a good
-decision criterion~\citep{Burstiness}. Because of that,  InLoc paper authors~\citet{InLoc} proposed to compare
+decision criterion~\citep{Burstiness}. Because of that,  InLoc paper authors~\citep{InLoc} proposed to compare
 the query photo against a render of the scene from the candidate pose. The paper showed the pixel-wise comparison
 to lead to a significantly better overall pose accuracy.
 
@@ -132,7 +132,66 @@ approach that uses a deep generative model to deal with occlusions, 2) a renderi
 called ray marching paired with modeling points as spheres having the source point's color and radius equal
 to the distance to the nearest neighbor to avoid holes in the resulting renders of flat surfaces, and 3)
 surface splatting algorithm~\citep{SurfaceSplatting} that models points as oriented colored disks with radii determined the same
-way as for ray marching-based renderer. Comparison to the work of~\citet{Bastien} is carried out on
-the InLoc Dataset~\citep{InLoc} and all the renderers are also applied to a dataset from the ARTwin
+way as for ray marching-based renderer. Several evaluations and experiments are performed for all the
+renderers and applied to the InLoc dataset from the original InLoc article, a dataset from the ARTwin
 project\footnotei{,}{\url{https://artwin-project.eu}} and the Phototourism
 dataset\footnotei{.}{\url{https://www.cs.ubc.ca/research/image-matching-challenge/2021/data}}
+
+\section*{Thesis Contribution}
+\addcontentsline{toc}{section}{Thesis Contribution}
+
+In the thesis, we generalize the original InLoc implementation to tackle a general dataset
+format as the original source codes are hardcoded towards the InLoc dataset. We also add
+generation of proxy data objects needed for InLoc runtime missing in the original
+implementation and provide generation scripts for the dataset format out of all
+three dataset types we study in the thesis and on which we demonstrate these capabilities.
+
+We supply all the necessary transformations between various data formats
+used by the neural model and other renderers. We utilize GPU-based
+\CC{} \& OpenGL surface splatting implementation and enhance it with the ability to render headlessly
+(without a window) both RGB and depth information based on views' camera parameters and a point
+cloud file. To our best knowledge, such a headless surface \uv{splatter} did not exist before.
+We also provide GPU-based \CC{} \& CUDA \& OpenGL ray marching renderer with both headless and windowed
+FPS camera modes with the same dataset generation component shared with the previous
+splatter. As for the splatter, such implementation was not available before, considering
+the performance. Both \CC{} renderers are shown to process tens of millions
+of points in a competitive time.
+
+The statistical, visual, and computational comparisons of renderers' performance are performed,
+showing the benefits of the splatter and marcher over the baseline, boosting localization
+as a whole, and the pose verification step solely. We also show that these renderers
+lead to better training of the neural model with notably better scores for all compared
+areas. Furthermore, we show the benefits of neural rendering in the pose verification step
+of the InLoc pipeline as it further pushes localization scores for a query image set.
+
+Based on the results, the pros and cons of all approaches are considered, and we propose
+their usage for varying problem settings. Please see the \nameref{chap:conclusion} for more details.
+
+\section*{Thesis Structure}
+\addcontentsline{toc}{section}{Thesis Structure}
+
+The thesis is divided into three chapters. The \emph{first chapter},
+\nameref{chap:visual_loc}, presents the visual localization
+methods and presents the InLoc localization pipeline and the
+reason why the method is chosen for further investigation.
+The \emph{second chapter}, \nameref{chap:pcd_rendering}, presents
+the theory behind rendering points and how it compares to
+rendering triangles, it introduces various traditional methods
+for visualizing points as well as neural rendering techniques
+with their classification. Finally, the chapter presents in
+detail the Neural Rerendering In the Wild, Surface Splatting,
+and ray marching with signed distance fields methods that are
+further examined in the \emph{third chapter},
+\nameref{chap:pose_verification}. The last chapter then gets to
+experiments conducted through the description of datasets examined
+and notes on the implementation of the localization pipeline, all
+renderers, and transformations of data to formats expected by
+all components. For the experiments, the comparison of renderers is
+carried out, and their influence on localization is examined.
+
+Enclosed to the thesis, there are source codes for all renderers,
+evaluations, and datasets' transformations. These can be found
+also at Github: \url{https://github.com/Auratons/inloc},
+\url{https://github.com/Auratons/neural_rendering},
+\url{https://github.com/Auratons/renderer_ray_marching}, and
+\url{https://github.com/Auratons/renderer_surface_splatting}.
