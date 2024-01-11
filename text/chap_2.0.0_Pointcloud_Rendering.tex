@@ -1,4 +1,4 @@
-\chapter{Point Cloud Rendering}
+\chapter{Point Cloud Rendering} \label{chap:pcd_rendering}
 
 As stated in~\citet{PointRendering}, using point primitives for rendering has been driven
 by two main reasons. Over the years,
@@ -33,7 +33,8 @@ issues presented in the preceding paragraphs. In the thesis, we take advantage o
 datasets. We found out that for large indoor areas, it may be tricky to come up with sufficiently good
 mesh that can be further used for the localization verification step rendering, as it can be seen
 in~\cref{fig:mesh_artwin_render}. Proceeding with point cloud-based rendering techniques,
-we work with three of them; please see the description below.
+we work with three of them together with the mentioned baseline \verb|GL_POINTS| approach;
+please see their descriptions in the following sections.
 
 \begin{figure}
     \centering
@@ -55,7 +56,7 @@ all the pixels it influences are found and updated. In \emph{image-order} render
 goes the other way round, each pixel is considered, and for such, all the objects that influence it are found, and
 the pixel value is computed. From these two approaches, image-order rendering is simpler to implement and more capable in the
 effects that can be incorporated and usually (though not always) takes more execution time compared to the second approach.
-Object-order rendering is also known as \emph{rasterization}, whereas under 
+Object-order rendering is also known as \emph{rasterization}, whereas under
 \emph{image-order} rendering, there are more possible approaches, such as ray-casting and ray-tracing.\\
 
 Rasterization is typically hardware-accelerated because it has good memory coherence~\citep{SOTARendering}, which is also
@@ -97,7 +98,7 @@ methods focus on modeling scenes from a physics perspective, simulating light tr
 machine learning can be used for modeling the distribution of real-world imagery. The models utilized for this task
 are called generative models, successors of the work on \emph{Generative Adversarial Neural Networks}
 (GANs)~\citep{GAN}, and can generate high-resolution images~\citep{ICLR, ICLR2} or videos~\citep{VPT, CDS}.
-More specifically, the field of so-called neural rendering 
+More specifically, the field of so-called neural rendering
 combines generative machine learning techniques with knowledge from classical computer
 graphics. It is defined as \uv{deep image or video generation approaches that enable
 explicit or implicit control of scene properties such as illumination, camera parameters, pose, geometry, appearance,
@@ -120,12 +121,12 @@ Further citing~\citet{SOTARendering}, neural rendering techniques can be classif
     an image-to-image transformation DNN that fuses \uv{guide image} into to the output one.
     Also, a more traditional approach uses scene parameters as an input to a graphical layer.
     \item \textbf{Computer Graphics Modules}. The separation along this axis is based on how much
-    of the classical rendering pipeline is integrated into the specific method. The simplest way 
+    of the classical rendering pipeline is integrated into the specific method. The simplest way
     to achieve that is to use a non-differentiable computer graphics (CG) component in the network
     architecture, which would present the render as an input to subsequent differentiable layers of a given architecture.
     When the module is at the beginning of the architecture, the task transforms into
     well-researched image-to-image translation. Fully differentiable CG modules also exist.
-    \item \textbf{Explicit vs. Implicit Control}. Here, the criterion is based on a type of 
+    \item \textbf{Explicit vs. Implicit Control}. Here, the criterion is based on a type of
     control signal. Explicit control from a user perspective means manual editing capability
     of scene parameters in a semantically meaningful manner. By implicit control, a representative
     sample as input is meant. The difference also translates to training data as explicit control
@@ -156,7 +157,13 @@ outputs using proxy geometry. These methods are sensitive to the scene database 
 also do not handle multiple appearances well~\citep{NRIW}. Neural networks and
 rendering alternative approaches have been proposed to mitigate these issues, such as~\citet{NR1, NR2, NRIW, InvSfM, FVS, SVS}.
 These methods build on IBR and image-to-image translation using explicit scene models. Learned implicit
-scene representation can be leveraged as well, see~\citet{NERF, NERF2, SceneRepr}.
+scene representation can be leveraged as well, see the Neural Radiance Fields~\citet{NERF, NERF2}
+and~\citet{SceneRepr}.
+
+The Neural Radiance Fields, together with the Gaussian Splatting neural model~\citep{kerbl3Dgaussians}
+combining the neural field with the splatting idea explored in the thesis represent the recent progress
+in the field nicely, alleviating some of the issues of the previous models. However, they were not yet
+available when the work on the thesis was started, they are not considered.
 
 
 \section{Neural Rerendering In the Wild}
@@ -180,7 +187,7 @@ both indoor and outdoor rendering.
 The method starts with building a proxy explicit 3D colored point cloud representation from a collection of
 scene photos~$\{I_i\}$ by utilizing Structure-from-Motion (SfM) and MultiView Stereo (MVS) implemented by
 COLMAP~\citep{schoenberger2016sfm, schoenberger2016mvs}. Authors prefer point clouds over generating a mesh
-in a possible next step, even though meshes generate more complete renderings, as meshes \uv{also tend to contain pieces of misregistered floating geometry which can occlude large regions of the scene}. 
+in a possible next step, even though meshes generate more complete renderings, as meshes \uv{also tend to contain pieces of misregistered floating geometry which can occlude large regions of the scene}.
 
 In the next stage, an aligned dataset of deferred-shading deep buffers $B_i$ is generated. Such a buffer,
 in general, may contain per-pixel albedo, normal, depth, and any other derivative information. Authors use
@@ -322,7 +329,7 @@ a ray cast from a camera through a pixel is undertaken, until the ray hits an ob
 the maximum number of permitted steps is exceeded. This very simple idea is fundamental in
 computer graphics and dates back to works like~\citet{RayMarching, Hypertexture}. Building
 on the idea, many effects, such as lights, shadows, and transparency, can be incorporated, to
-name a few~\citep{RealTimeRendering}. This thesis implements a variant of the method using 
+name a few~\citep{RealTimeRendering}. This thesis implements a variant of the method using
 \emph{signed distance functions} (SDF).
 
 In a given scene consisting of solid bodies, a \emph{signed distance function} is a simple scalar
@@ -337,7 +344,7 @@ S(P) < 0 & \text{when it is outside all bodies~\citep{SDF}.}
 \end{equation}
 
 A \emph{scene SDF} defines the scene implicitly. An \emph{object SDF} is the SDF of a scene containing
-only that one object. Object SDFs can be computed analytically for simple shapes; see 
+only that one object. Object SDFs can be computed analytically for simple shapes; see
 work of Inigo Quilez\footnotei{,}{\url{https://iquilezles.org/articles/distfunctions}}
 or tabulated in grids, octrees, or other spatial data structures. A scene SDF can then be constructed
 by combining SDFs of objects in the scene. For simple analytically-describable shapes, an

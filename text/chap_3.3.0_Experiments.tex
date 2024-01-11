@@ -15,6 +15,15 @@ respective real-world image captured by a camera, we utilize two
 metrics---pixel-wise $L_1$ loss and Peak Signal to Noise Ratio (PSNR). The final metric
 value across a dataset is computed as the mean value of the loss per photo.
 
+Since many models needed to be trained in a considerably costly
+process, only Image Matching Challenge data is used. The results can be seen in
+tables~\cref{tab:hagia_rendering_metrics}, \cref{tab:grand_rendering_metrics},
+and \cref{tab:pantheon_rendering_metrics}. We compare not only three non-neural
+renderers plus three neural models trained on those renderers' data but
+also point cloud density. The density generally affects rendering times for
+classical and non-neural renderers and transversely affects complete render
+times for a neural model inference.
+
 \def\m{~\mathrm{m}}
 \def\M{\mathrm{m}}
 \def\dg{^{\circ}}
@@ -57,15 +66,6 @@ on the respective renderer.}
     \end{tabular}
 \label{tab:hagia_rendering_metrics}
 \end{table}
-
-Since many models needed to be trained in a considerably costly
-process, only Image Matching Challenge data is used. The results can be seen in
-tables~\cref{tab:hagia_rendering_metrics}, \cref{tab:grand_rendering_metrics}, 
-and \cref{tab:pantheon_rendering_metrics}. We compare not only three non-neural
-renderers plus three neural models trained on those renderers' data but
-also point cloud density. The density generally affects rendering times for
-classical and non-neural renderers and transversely affects complete render
-times for a neural model inference.
 
 \begin{table}[h]
 \caption[Comparison of $L_1$ and PSNR metrics over Grand Place collection]{
@@ -214,7 +214,7 @@ visibility problem is, as expected, not present in any visibly excessive
 amount. The smaller sparsity influences those as well, though---using
 fewer points leads to more blurry renders, as the diameters of the
 remaining points are bigger. On the other hand, the rendering is faster
-and, as visible, still more continuous. 
+and, as visible, still more continuous.
 
 The neural rendering approach is represented by just one unspecified
 model in~\cref{fig:hagia_renderers}, \cref{fig:grand_renderers}, and
@@ -287,14 +287,14 @@ in~\cref{fig:inloc_renderers})\footnotei{.}{As the ARTwin dataset is
 not publicly available, it is excluded from visualizations here as its
 display is minimized in the thesis.} Two views from the database are displayed
 with all non-neural and neural renderers. In the first one with chairs,
-one point with a comparatively larger diameter than most others is 
+one point with a comparatively larger diameter than most others is
 near the left-down corner of the Splatter and Marcher image. These bigger splats
-and spheres result in artifacts in neurally-generated images, as 
+and spheres result in artifacts in neurally-generated images, as
 depicted in the second image row. These patches are something that the screen space
 renderer does not suffer from, as all points are of the same screen size.
 The advantage of variable diameters
 is visible in the second view. With the same sufficient number of points,
-the text on the board is more sharp. Also, the floor gets some coverage 
+the text on the board is more sharp. Also, the floor gets some coverage
 compared to the Pyrender-generated image. The background-filled portions of
 Splatter-generated images are caused by the concrete actual point-splatting
 implementation, both Splatter and Marcher use the same underlying diameters.\\
@@ -323,7 +323,7 @@ machine alone for the measuring task, which is hard to ensure on the cluster.
 This complexity is to be seen in the table with times varying across
 comparable output render dimensions and renderer types.
 
-Across the datasets, the most consistent results are for C++ \emph{Splatter}
+Across the datasets, the most consistent results are for \CC{} \emph{Splatter}
 implementation. The smallest standard deviations show
 implementation consistency. The point cloud size influence is also visible,
 as for bigger renders and tens of millions of points, the rendering times
@@ -349,7 +349,7 @@ neural rendering process includes rendering a given point cloud by some
 non-neural renderer before inference occurs, which may even double the
 rendering time in actual use cases.
 
-C++ implementation of the Marcher does not use the standard OpenGL rendering
+\CC{} implementation of the Marcher does not use the standard OpenGL rendering
 pipeline but CUDA parallelization over pixels. Most notably, it
 iterates over points in the view frustum, so its rendering computational
 performance depends on the 3D structure of a given view of the scene. The

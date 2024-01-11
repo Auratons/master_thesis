@@ -1,4 +1,4 @@
-\chapter{Visual Localization}
+\chapter{Visual Localization} \label{chap:visual_loc}
 
 As stated in~\nameref{intro}, visual localization is the task of finding
 the position of a camera that took a query photo relative to a reference scene
@@ -18,6 +18,9 @@ textureless areas such as walls, ceilings, and floors; from repetition and symme
 on both the global level with corridors, for example, and the local level, such as door handles.
 Also, compared to outside, with typically longer distances between objects, inside small change
 of viewing position leads to a vastly different view.
+
+In this chapter, we present previous work on the matter and describe the InLoc method
+explored in the thesis, explaining why this very method is chosen.
 
 \section{Related work}
 
@@ -127,7 +130,7 @@ across the entire image while ignoring areas with missing 3D structure resulting
 
 This thesis further examines the view synthesis part of the verification process as it changes the rendered source imputed
 to the RootSIFT descriptor computation process. In further chapters, three rendering
-techniques alternative to the initial article's rendering process are described in detail.
+techniques alternative to the baseline \verb|GL_POINTS| rendering approach are described in detail.
 
 The decision to use the InLoc method in the thesis was driven by the fact that it is the first method of its kind,
 state-of-the-art of its time that puts basis or plays a role of a baseline for
