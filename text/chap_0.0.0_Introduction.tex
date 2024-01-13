@@ -15,10 +15,10 @@ By the position in visual localization
 6~parameters are meant (degrees of freedom---DoF), 3~of which are an absolute position in
 reference coordinate system and the rest are the orientation of the camera.
 A scene in general visual localization is a set
-of RGB images, possibly associated with depth information per pixel (RGBD).
+of RGB images, possibly associated with per-pixel depth information (denoted as RGBD).
 In the settings of this thesis, an \uv{explicit} scene representation
-is used, unless otherwise said, meaning a 3D colored point cloud build from the \uv{implicit}
-representation based wholly on images~\citep{SOTARendering}.
+is used, unless otherwise said. In other words, a 3D colored point cloud obtained from the \uv{implicit}
+representation based wholly on images~\citep{SOTARendering} is used.
 
 % https://europe.naverlabs.com/blog/methods-for-visual-localization/
 As indicated, a solution to the problem is of great importance in autonomous robotics,
@@ -51,9 +51,9 @@ used to estimate the query image's camera pose with respect to the scene, typica
 due to the large amount of them. Arguably, besides the different numbers of DoF these methods output,
 visual localization may provide more reliable and accurate poses.
 
-Thus, as the applications mentioned require higher accuracy, 6~DoF positions and fairly often
-must work either directly indoors or at least reliably under various troublesome conditions for
-network-based methods, visual localization has the potential to fulfill these
+The applications mentioned require higher accuracy, 6~DoF positions, and fairly often they
+require good performance either directly indoors or at least working reliably under various troublesome conditions for
+network-based methods. The visual localization has the potential to fulfill these
 requirements accurately up to a few centimeters and
 degrees\footnotei{.}{\url{https://www.visuallocalization.net/benchmark}}
 
@@ -164,8 +164,9 @@ lead to better training of the neural model with notably better scores for all c
 areas. Furthermore, we show the benefits of neural rendering in the pose verification step
 of the InLoc pipeline as it further pushes localization scores for a query image set.
 
-Based on the results, the pros and cons of all approaches are considered, and we propose
-their usage for varying problem settings. Please see the \nameref{chap:conclusion} for more details.
+Based on the results, the pros and cons of all approaches are outlined. On top of these
+considerations, we propose which approach to use for varying problem settings. See the
+\nameref{chap:conclusion} chapter for more details.
 
 \section*{Thesis Structure}
 \addcontentsline{toc}{section}{Thesis Structure}
@@ -182,7 +183,7 @@ with their classification. Finally, the chapter presents in
 detail the Neural Rerendering In the Wild, Surface Splatting,
 and ray marching with signed distance fields methods that are
 further examined in the \emph{third chapter},
-\nameref{chap:pose_verification}. The last chapter then gets to
+\nameref{chap:pose_verification}. This last chapter then gets to
 experiments conducted through the description of datasets examined
 and notes on the implementation of the localization pipeline, all
 renderers, and transformations of data to formats expected by
@@ -190,8 +191,8 @@ all components. For the experiments, the comparison of renderers is
 carried out, and their influence on localization is examined.
 
 Enclosed to the thesis, there are source codes for all renderers,
-evaluations, and datasets' transformations. These can be found
-also at Github: \url{https://github.com/Auratons/inloc},
+evaluations, and datasets' transformations. Repositories for these
+can be found also at Github: \url{https://github.com/Auratons/inloc},
 \url{https://github.com/Auratons/neural_rendering},
 \url{https://github.com/Auratons/renderer_ray_marching}, and
 \url{https://github.com/Auratons/renderer_surface_splatting}.

@@ -71,7 +71,7 @@ better than sparse features such as SIFT~\citep{RetrievalEE, DNNRegression, haus
 
 This category of methods uses a DNN for regressing the query pose end-to-end from an RGB image
 directly to a 6~DoF pose. Based on the assumption that features obtained by a Neural Network (NN) trained for a general vision task
-also include helpful information for pose estimation, transfer learning is leveraged for pose regression.
+also include some helpful information for pose estimation, transfer learning is leveraged for the pose regression.
 
 % https://arxiv.org/pdf/2207.05530.pdf
 PoseNet~\citep{PoseNet} is an example of such an approach using an image classification CNN architecture, like
@@ -134,6 +134,5 @@ techniques alternative to the baseline \verb|GL_POINTS| rendering approach are d
 
 The decision to use the InLoc method in the thesis was driven by the fact that it is the first method of its kind,
 state-of-the-art of its time that puts basis or plays a role of a baseline for
-other subsequent state-of-the-art methods~\citep{PoseCorrection}. Further, its source codes are publicly
-available\footnotei{,}{\url{http://www.ok.sc.e.titech.ac.jp/INLOC}} whereas a subsequent paper~\citep{InLocRevisited}
+other subsequent state-of-the-art methods~\citep{PoseCorrection}. Further, its source codes are public\footnotei{,}{\url{http://www.ok.sc.e.titech.ac.jp/INLOC}} whereas a subsequent paper~\citep{InLocRevisited}
 presenting some improvements does not provide source codes.

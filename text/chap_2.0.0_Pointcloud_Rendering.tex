@@ -34,7 +34,7 @@ datasets. We found out that for large indoor areas, it may be tricky to come up 
 mesh that can be further used for the localization verification step rendering, as it can be seen
 in~\cref{fig:mesh_artwin_render}. Proceeding with point cloud-based rendering techniques,
 we work with three of them together with the mentioned baseline \verb|GL_POINTS| approach;
-please see their descriptions in the following sections.
+see their descriptions in the following sections.
 
 \begin{figure}
     \centering
@@ -43,7 +43,7 @@ please see their descriptions in the following sections.
     as for~\cref{fig:pyrender_artwin_render}. The mesh was created
     semi-manually, meaning that boxes, for instance, were meshed separately and then placed at the right
     place of the resulting mesh. We can see some disadvantages of using meshes in complex environments.
-    Despite long processing time and laborious manual work, the result is not that compelling compared to renders
+    Despite long processing time and laborious manual work, the result is not compelling compared to renders
     using point primitives.}\label{fig:mesh_artwin_render}
 \end{figure}
 
@@ -61,11 +61,11 @@ Object-order rendering is also known as \emph{rasterization}, whereas under
 
 Rasterization is typically hardware-accelerated because it has good memory coherence~\citep{SOTARendering}, which is also
 one of the reasons for one of the previous claims about execution speed comparison. (Though modern GPU cards already have
-hardware support for ray-tracing as well\footnotei{.}{\url{https://developer.nvidia.com/rtx/ray-tracing}}) Rasterization,
-as an object-order method, requires an explicit scene representation, such as mesh or point cloud, whereas the other
-methods can work with both implicit and explicit representations.\\
+hardware support for ray-tracing as well\footnotei{.}{\url{https://developer.nvidia.com/rtx/ray-tracing}}) The rasterization,
+as a representative of the object-order methods, requires an explicit scene representation, such as mesh or point cloud, whereas the other
+methods work with both implicit and explicit representations.\\
 
-Ray-casting and ray-tracing are, in some sense, orthogonal methods within image-order realm; please see~\cref{fig:casting_tracing}.
+Ray-casting and ray-tracing are, in some sense, orthogonal methods within image-order realm; see~\cref{fig:casting_tracing}.
 Ray-casting computes a ray (coming from the camera center
 through a specific pixel of the screen) intersections with the representation of the scene to project the scene onto the screen.
 In ray-tracing, the primary ray is considered to be coming from the scene, through the screen to the camera center, conveying
@@ -73,7 +73,7 @@ color information gathered from all physics-based interactions of light with obj
 are simulated by recursively casting new rays from the intersections with the geometry~\citep{Whitted1979AnII}. The advantage
 of this rendering process is the realism of the simulation of real-world optical effects.
 While rasterization and ray-casting are a simple, one-way
-processes, ray-tracing is inherently recursive. Hence it is a more complex problem.
+processes, ray-tracing is an inherently recursive problem. Hence it is a more complex task.
 
 \begin{figure}
     \centering
@@ -201,7 +201,7 @@ understand transient objects in the scene.
 The aligned dataset is used to train a multimodal image translation model. Its goal is to learn
 a latent appearance vector~$z^a_i$ that captures variations in the output domain~$I_i$ that cannot be
 inferred from the input domain~$B_i$. The method computes~$z^a_i$ as~$E^a(I_i, B_i)$, where~$E^a$ is
-an appearance encoder of inputted~$I_i$ and~$B_i$ (the buffer is used for allowing the network to learn
+an appearance encoder of input~$I_i$ and~$B_i$ (the buffer is used for allowing the network to learn
 more complex appearance models by correlating the lighting in the real image with scene geometry in the
 corresponding buffer). Lastly, a rerendering network~$R$ produces a scene rendering conditioned
 on both deep buffer~$B_i$ and the latent appearance vector~$z^a_i$. \cref{fig:nriw} presents a visual
@@ -243,7 +243,7 @@ transient objects in the appearance latent space or associating such objects wit
 Surface splatting, presented by~\citet{SurfaceSplatting}, is an efficient technique for rendering high-quality
 images of point clouds (point-sampled surfaces), supported by rigorous mathematical analysis around
 resampling. In contrast to ray-tracing, it is a forward-projection approach that uses z-buffer to
-resolve visibility. Also, it can avoid aliasing artifacts brought alongside discretizing otherwise
+resolve visibility. It can avoid aliasing artifacts brought alongside discretizing otherwise
 continuous space by a screen space formulation of the Elliptical Weighted Average (EWA) filter for
 irregularly spaced point samples without global texture parameterization.
 
@@ -284,7 +284,7 @@ taking a pixel position and returning color could be defined according to previo
 \phi(x, y) = \sum_i c_i\rho_i(x, y)\,,
 \end{equation}
 where the sum is carried over the indices of all points~$\{\mathbf{p}_i\}$ of the surface, $\rho_i$ are individual
-footprint functions, and~$c_i$ are channel color values associated with a given point.
+footprint functions, and~$c_i$ are channel color values of a given point.
 
 The definition~\cref{eq:simple_splatting} has an issue with reproducing surfaces with constant color and thus can
 lead to visible artifacts. Also, footprint functions are truncated to finite support. Both leads to the below presented
@@ -302,7 +302,7 @@ normalization factor sum from the denominator of~\cref{eq:normalized_splatting} 
 In the second pass, all pixels are processed by normalization of the accumulated contributions by the accumulated
 normalization factor.
 
-\begin{algorithm}
+\begin{algorithm}[t]
 	\caption{Pseudocode of the splatting algorithm.}\label{algo:splatting}
 	\begin{algorithmic}[1]
 		\Procedure{splat\_rendering}{p[], c[], w[], z[]}
@@ -332,7 +332,7 @@ on the idea, many effects, such as lights, shadows, and transparency, can be inc
 name a few~\citep{RealTimeRendering}. This thesis implements a variant of the method using
 \emph{signed distance functions} (SDF).
 
-In a given scene consisting of solid bodies, a \emph{signed distance function} is a simple scalar
+In a given scene consisting of solid bodies, a \emph{signed distance function} is a scalar
 function~$S(P)$ defined at every point~$P$ in a (2D or 3D) space, such that
 
 \begin{equation}\label{eq:sdf_def}
@@ -401,8 +401,8 @@ we take~$N$ closest points, instead of just one, compute exact SDF for those wit
 at the minimal distance determined. The same KD-tree is pre-build once at the start of the rendering process and
 is also used for radii computation instead of computing those exhaustively.
 
-    
-\begin{algorithm}
+
+\begin{algorithm}[t]
     \caption{Pseudocode of the ray marching with SDF.}\label{algo:marching}
     \begin{algorithmic}[1]
         \Procedure{ray\_march}{ray\_origin, ray\_direction}

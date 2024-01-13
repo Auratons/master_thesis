@@ -6,7 +6,7 @@ algorithm solving the visual localization problem and its verification step.
 The point cloud rendering approaches, and later localization performance are
 evaluated on three different dataset types covering both exteriors and
 interiors; the InLoc implementation is generalized so that a general dataset,
-not only the one that InLoc was released with, can be inputted for localization.
+not only the one that InLoc was released with, can be input for localization.
 
 Four different rendering approaches are utilized---as a baseline approach,
 the default OpenGL point rendering primitive \verb|GL_POINTS| is used, further,
@@ -18,7 +18,7 @@ performance to be able to render point clouds of sizes present in the datasets,
 third-party point splatting \CC{} implementation within a graphical interface is
 enhanced with headless rendering capabilities, the capability to read external point
 clouds and camera parameters, and output depth information for renders. The ray
-marching renderer is implemented in \CC{} and CUDA from the ground, eventually
+marching renderer is implemented in \CC{} and CUDA from scratch, eventually
 reusing the same components from the splatter enhancements. To the best of our knowledge,
 previously, there were no such implementations with these capabilities being able
 to render tens of millions of points in a reasonable time.\\
@@ -64,8 +64,8 @@ every dataset explored. There has been considerable progress in the neural rende
 field since work on the thesis started, so future work may explore these advancements.
 For instance, the Neural Radiance Fields (NeRF) models~\citep{NERF, NERF2} and the
 Gaussian Splatting model~\citep{kerbl3Dgaussians} push neural rendering performance
-further. The latter model is highly related to the splatting point rendering approach
-explored here.\\
+further. The latter model is highly related to the point splatting rendering approach
+explored here in the thesis.\\
 
 To summarize, when maximal localization performance is sought, Splatter and Marcher
 help the localization pipeline's frontend, together with neural rendering based on the

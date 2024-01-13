@@ -11,9 +11,9 @@ tweaks, is leveraged. Finally, the ray marching renderer based on OpenGL is enti
 author's work.
 
 Aside from the localization algorithm and renderers, scripts transforming dataset formats,
-described in~\cref{tab:model_conventions}, into notations and conventions used by InLoc
-and renderers described in~\cref{tab:agorithm_conventions} are also added; for further
-information, please see below.\\
+described in~\cref{tab:model_conventions}, into notations and conventions used by the InLoc
+pipeline and renderers themselves as described in~\cref{tab:agorithm_conventions}
+are also added; for more information, see below.\\
 
 To be runnable in CIIRC computational cluster environment, which distributes jobs
 submitted by users by Slurm\footnote{\url{https://www.schedmd.com}}, batch job shell
@@ -52,7 +52,7 @@ the CIIRC computational cluster, a driver with bug-less EGL\footnote{EGL is an i
 between Khronos rendering APIs such as OpenGL ES or OpenVG and the underlying native
 platform window system, \url{https://www.khronos.org/egl}.} support must be used, which is
 something not every driver version satisfies. CUDA and OpenGL libraries are then owned by
-each container, communicating with the shared driver on the OS level.
+each container, communicating with the shared driver on the operating system level.
 
 Singularity\footnote{\url{https://sylabs.io}} is a containerization platform similar to
 Docker, with one notable exception leading to the adoption of the tool by computational
@@ -82,7 +82,7 @@ use DVC after all.
 
 The implementation of the
 pipeline\footnote{\url{https://github.com/Auratons/inlocciirc_demo}} is based on the
-author's Matlab sources\footnotei{.}{\url{https://github.com/HajimeTaira/InLoc_demo}} The
+Matlab sources written by the article's author\footnotei{.}{\url{https://github.com/HajimeTaira/InLoc_demo}} The
 source code is unified for better readability and verifiability; it is also generalized,
 as the original implementation targets specifically the InLoc
 dataset\footnotei{,}{\url{https://github.com/HajimeTaira/InLoc_dataset}}. Furthermore, as
@@ -278,7 +278,7 @@ camera handling of the underlying interactive rendering library GLviz of the sam
 was identified and resolved\footnote{\url{https://github.com/Auratons/glviz}} to have
 rendered views for the same camera poses unified across all renderers used. The bug is
 not apparent when using the FPS camera to explore the displayed scene model. However,
-when comparing to the outputs of a proper computer-vision grade renderer, it becomes obvious.
+when comparing generated views to the outputs of a computer-vision grade renderer, it becomes obvious.
 
 The algorithm needs not only per-point radii but also normal vectors in order to orient
 splats properly. For computing those, Meshlab\footnote{\url{https://www.meshlab.net}} and,
@@ -286,7 +286,7 @@ for automation, Pymeshlab\footnote{\url{https://pymeshlab.readthedocs.io}} tools
 used. The maximal diameter hyperparameter is used in the same sense as for the Marcher.
 
 
-\begin{table}
+\begin{table}[t]
 \caption[Comparison of input format expectations of algorithms used in the
 thesis from the transformations perspective]{Comparison of input format
 expectations of algorithms used in the
